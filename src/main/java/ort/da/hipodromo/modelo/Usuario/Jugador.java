@@ -1,4 +1,6 @@
-package ort.da.hipodromo.modelo;
+package ort.da.hipodromo.modelo.Usuario;
+
+import ort.da.hipodromo.modelo.Exceptions.DatosInvalidosException;
 
 public class Jugador extends Usuario {
     private double saldo;
@@ -12,14 +14,21 @@ public class Jugador extends Usuario {
         return saldo;
     }
 
-    public void setSaldo(double saldo) {
-        this.saldo = saldo;
-    }
 
     @Override
     public String toString() {
         return "Jugador [saldo=" + saldo + "]";
     }
     
-    
+    private void validarSaldo() throws DatosInvalidosException{
+        if(saldo < 0){
+            throw new DatosInvalidosException("El saldo no puede ser negativo.");
+        }
+    }
+
+    @Override
+    public void validar() throws DatosInvalidosException{
+        super.validar();
+        validarSaldo();
+}
 }
