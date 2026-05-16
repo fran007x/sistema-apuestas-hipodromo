@@ -45,6 +45,25 @@ public class Registro {
         return total;
     }
 
+    public int cantidadApuestas() {
+        return apuestas.size();
+    }
+
+    public double calcularDividendo(double totalApostadoCarrera, double comision){
+        double totalApostadoRegistro = totalApostado();
+
+        if(totalApostadoRegistro == 0){
+            return 0;
+        }
+
+        double pozoARepartir = totalApostadoCarrera *(1 - comision);
+
+        return pozoARepartir / totalApostadoRegistro;
+    }
+
+    public boolean dividendoValido(double totalApostadoCarrera, double comision) {
+    return cantidadApuestas() > 0 && calcularDividendo(totalApostadoCarrera, comision) > 1;
+    }
 
     @Override
     public boolean equals(Object obj) {
