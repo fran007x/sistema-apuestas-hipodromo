@@ -17,12 +17,12 @@ public class Apuesta {
     private Date fecha;
 
 
-    public Apuesta(Jugador jugador, Registro registro, ModalidadApuesta modalidad, EstadoApuesta estado, double monto,
+    public Apuesta(Jugador jugador, Registro registro, ModalidadApuesta modalidad, double monto,
             double costo, double montoCobrado, double dividendoFinal, Date fecha) {
         this.jugador = jugador;
         this.registro = registro;
         this.modalidad = modalidad;
-        this.estado = estado;
+        this.estado = EstadoApuesta.Por_Iniciar;
         this.monto = monto;
         this.costo = costo;
         this.montoCobrado = montoCobrado;
@@ -98,10 +98,6 @@ public class Apuesta {
         return estado;
     }
 
-    public void setEstado(EstadoApuesta estado) {
-        this.estado = estado;
-    }
-
     @Override
     public String toString() {
         return "Apuesta [jugador=" + jugador + ", registro=" + registro + ", modalidad=" + modalidad + ", estado="
@@ -109,5 +105,21 @@ public class Apuesta {
                 + ", dividendoFinal=" + dividendoFinal + ", fecha=" + fecha + "]";
     }
 
-    
+    public boolean esGanadora(Registro ganador){
+        return registro.equals(ganador);
+    }
+
+    public void liquidar(Registro ganador, double dividendoFinal) {
+        this.dividendoFinal = dividendoFinal;
+
+        if (esGanadora(ganador)) {
+            double totalApostadoRegistro = registro.totalApostado();
+
+            this.montoCobrado = modalidad.calcularPago(monto,dividendoFinal,totalApostadoRegistro);
+
+            jugador.acreditarSaldo(montoCobrado);
+        }
+
+        estado = EstadoApuesta.Finalizada;
+    }
 }

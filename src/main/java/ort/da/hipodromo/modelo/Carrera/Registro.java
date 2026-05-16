@@ -1,20 +1,30 @@
 package ort.da.hipodromo.modelo.Carrera;
 
-public class Registro {
-    private Caballo caballo;
-    private Carrera carrera;
+import java.util.List;
 
-    public Registro(Caballo caballo, Carrera carrera) {
-        this.caballo = caballo;
+import ort.da.hipodromo.modelo.Apuesta.Apuesta;
+
+public class Registro {
+    private int numeroCaballo;
+    private Carrera carrera;
+    private List<Apuesta> apuestas;
+
+    public Registro(int numeroCaballo, Carrera carrera, List<Apuesta> apuestas) {
+        this.numeroCaballo = numeroCaballo;
         this.carrera = carrera;
+        this.apuestas = apuestas;
     }
     
-    public Caballo getCaballo() {
-        return caballo;
+    public List<Apuesta> getApuestas() {
+        return apuestas;
     }
 
-    public void setCaballo(Caballo caballo) {
-        this.caballo = caballo;
+    public int getNumeroCaballo() {
+        return numeroCaballo;
+    }
+
+    public void setNumeroCaballo(int numeroCaballo) {
+        this.numeroCaballo = numeroCaballo;
     }
 
     public Carrera getCarrera() {
@@ -23,5 +33,36 @@ public class Registro {
 
     public void setCarrera(Carrera carrera) {
         this.carrera = carrera;
+    }
+
+
+    public double totalApostado(){
+        double total = 0;
+        
+        for(Apuesta apuesta : apuestas){
+            total += apuesta.getMonto();
+        }
+        return total;
+    }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+
+        Registro otro = (Registro) obj;
+
+        return this.numeroCaballo == otro.numeroCaballo;
+    }
+
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(numeroCaballo);
     }
 }
