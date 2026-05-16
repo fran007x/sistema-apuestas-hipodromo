@@ -1,16 +1,14 @@
-package ort.da.hipodromo.modelo;
+package ort.da.hipodromo.modelo.Carrera;
 
 public class Registro {
     private Caballo caballo;
     private Carrera carrera;
 
-    // Constructor
     public Registro(Caballo caballo, Carrera carrera) {
         this.caballo = caballo;
         this.carrera = carrera;
     }
-
-    // Getters y Setters
+    
     public Caballo getCaballo() {
         return caballo;
     }

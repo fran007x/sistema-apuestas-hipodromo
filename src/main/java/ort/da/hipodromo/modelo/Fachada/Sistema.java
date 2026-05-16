@@ -1,4 +1,8 @@
-package ort.da.hipodromo.modelo;
+package ort.da.hipodromo.modelo.Fachada;
+
+import ort.da.hipodromo.modelo.Sistemas.SistemaApuestas;
+import ort.da.hipodromo.modelo.Sistemas.SistemaCarreras;
+import ort.da.hipodromo.modelo.Sistemas.SistemaUsuarios;
 
 public class Sistema {
     private static Sistema instancia;

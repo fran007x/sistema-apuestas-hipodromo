@@ -1,4 +1,8 @@
-package ort.da.hipodromo.modelo;
+package ort.da.hipodromo.modelo.Apuesta;
+
+import ort.da.hipodromo.modelo.Carrera.Carrera;
+import ort.da.hipodromo.modelo.Carrera.Registro;
+import ort.da.hipodromo.modelo.Usuario.Jugador;
 
 public class ApuestaEnCurso {
     private Jugador jugador;

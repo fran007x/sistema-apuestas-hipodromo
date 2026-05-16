@@ -1,6 +1,9 @@
-package ort.da.hipodromo.modelo;
+package ort.da.hipodromo.modelo.Apuesta;
 
 import java.util.Date;
+
+import ort.da.hipodromo.modelo.Carrera.Registro;
+import ort.da.hipodromo.modelo.Usuario.Jugador;
 
 public class Apuesta {
     private Jugador jugador;

@@ -1,4 +1,4 @@
-package ort.da.hipodromo.modelo;
+package ort.da.hipodromo.modelo.Carrera;
 
 import java.time.LocalDateTime;
 import java.util.List;

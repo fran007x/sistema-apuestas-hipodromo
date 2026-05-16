@@ -1,7 +1,10 @@
-package ort.da.hipodromo.modelo;
+package ort.da.hipodromo.modelo.Sistemas;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import ort.da.hipodromo.modelo.Carrera.Caballo;
+import ort.da.hipodromo.modelo.Carrera.Jornada;
 
 public class SistemaCarreras {
     private List<Jornada> jornadas;

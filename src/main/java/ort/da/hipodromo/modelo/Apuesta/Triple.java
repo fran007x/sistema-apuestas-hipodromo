@@ -1,4 +1,4 @@
-package ort.da.hipodromo.modelo;
+package ort.da.hipodromo.modelo.Apuesta;
 
 public class Triple extends ModalidadApuesta {
 

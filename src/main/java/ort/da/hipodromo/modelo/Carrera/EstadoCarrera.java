@@ -1,4 +1,4 @@
-package ort.da.hipodromo.modelo;
+package ort.da.hipodromo.modelo.Carrera;
 
 public enum EstadoCarrera {
     Definida,

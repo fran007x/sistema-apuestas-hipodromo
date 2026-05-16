@@ -1,7 +1,9 @@
-package ort.da.hipodromo.modelo;
+package ort.da.hipodromo.modelo.Sistemas;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import ort.da.hipodromo.modelo.Usuario.Usuario;
 
 public class SistemaUsuarios {
     private List<Usuario> usuarios;
