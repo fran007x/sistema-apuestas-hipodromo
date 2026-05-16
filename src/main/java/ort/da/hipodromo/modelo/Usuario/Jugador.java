@@ -1,6 +1,7 @@
 package ort.da.hipodromo.modelo.Usuario;
 
 import ort.da.hipodromo.modelo.Exceptions.DatosInvalidosException;
+import ort.da.hipodromo.modelo.Exceptions.SaldoInsuficienteException;
 
 public class Jugador extends Usuario {
     private double saldo;
@@ -30,5 +31,22 @@ public class Jugador extends Usuario {
     public void validar() throws DatosInvalidosException{
         super.validar();
         validarSaldo();
-}
+    }
+
+
+    public boolean tieneSaldoSuficiente(double monto){
+        return saldo >= monto;
+    }
+
+    public void descontarSaldo(double monto) throws SaldoInsuficienteException{
+        if(!tieneSaldoSuficiente(monto)){
+            throw new SaldoInsuficienteException("Saldo insuficiente.");
+        }
+        saldo -= monto;
+    }
+
+    public void acreditarSaldo(double monto){
+        saldo += monto;
+    }
+
 }
