@@ -11,13 +11,12 @@ public abstract class ModalidadApuesta {
         return nombre;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
     @Override
     public String toString() {
-        return "ModalidadApuesta [nombre=" + nombre + "]";
+        return  nombre;
     }
 
+    public abstract double calcularCosto(double monto);
+
+    public abstract double calcularPago(double monto, double dividendoFinal, double totalApostadoRegistro);
 }
