@@ -18,15 +18,15 @@ public class Apuesta {
 
 
     public Apuesta(Jugador jugador, Registro registro, ModalidadApuesta modalidad, double monto,
-            double costo, double montoCobrado, double dividendoFinal, Date fecha) {
+            Date fecha) {
         this.jugador = jugador;
         this.registro = registro;
         this.modalidad = modalidad;
         this.estado = EstadoApuesta.Por_Iniciar;
         this.monto = monto;
-        this.costo = costo;
-        this.montoCobrado = montoCobrado;
-        this.dividendoFinal = dividendoFinal;
+        this.costo = modalidad.calcularCosto(monto);
+        this.montoCobrado = 0;
+        this.dividendoFinal = 0;
         this.fecha = fecha;
     }
 
@@ -34,64 +34,33 @@ public class Apuesta {
         return jugador;
     }
 
-    public void setJugador(Jugador jugador) {
-        this.jugador = jugador;
-    }
-
     public Registro getRegistro() {
         return registro;
-    }
-
-    public void setRegistro(Registro registro) {
-        this.registro = registro;
     }
 
     public ModalidadApuesta getModalidad() {
         return modalidad;
     }
 
-    public void setModalidad(ModalidadApuesta modalidad) {
-        this.modalidad = modalidad;
-    }
-
     public double getMonto() {
         return monto;
     }
 
-    public void setMonto(double monto) {
-        this.monto = monto;
-    }
 
     public double getCosto() {
         return costo;
-    }
-
-    public void setCosto(double costo) {
-        this.costo = costo;
     }
 
     public double getMontoCobrado() {
         return montoCobrado;
     }
 
-    public void setMontoCobrado(double montoCobrado) {
-        this.montoCobrado = montoCobrado;
-    }
-
     public double getDividendoFinal() {
         return dividendoFinal;
     }
 
-    public void setDividendoFinal(double dividendoFinal) {
-        this.dividendoFinal = dividendoFinal;
-    }
-
     public Date getFecha() {
         return fecha;
-    }
-
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
     }
 
     public EstadoApuesta getEstado() {
@@ -109,9 +78,7 @@ public class Apuesta {
         return registro.equals(ganador);
     }
 
-    public void liquidar(Registro ganador, double dividendoFinal) {
-        this.dividendoFinal = dividendoFinal;
-
+    public void liquidar(Registro ganador) {
         if (esGanadora(ganador)) {
             double totalApostadoRegistro = registro.totalApostado();
 
@@ -121,5 +88,9 @@ public class Apuesta {
         }
 
         estado = EstadoApuesta.Finalizada;
+    }
+
+    public void guardarDividendoFinal(double dividendoFinal){
+        this.dividendoFinal = dividendoFinal;
     }
 }

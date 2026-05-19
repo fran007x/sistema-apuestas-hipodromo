@@ -65,6 +65,31 @@ public class Registro {
     return cantidadApuestas() > 0 && calcularDividendo(totalApostadoCarrera, comision) > 1;
     }
 
+    public double totalPagado(){
+        double total = 0;
+
+        for(Apuesta apuesta : apuestas){
+            total+= apuesta.getMontoCobrado();
+        }
+        return total;
+    }
+
+    public void agregarApuesta(Apuesta apuesta){
+        apuestas.add(apuesta);
+    }
+
+    public void guardarDividendoFinalEnApuestas(double dividendoFinal){
+        for(Apuesta apuesta : apuestas){
+            apuesta.guardarDividendoFinal(dividendoFinal);
+        }
+    }
+
+    public void liquidarApuestas(Registro ganador){
+        for(Apuesta apuesta : apuestas){
+            apuesta.liquidar(ganador);
+        }
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
