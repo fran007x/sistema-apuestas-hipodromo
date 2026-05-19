@@ -1,23 +1,28 @@
 package ort.da.hipodromo.modelo.Carrera;
 
+import ort.da.hipodromo.modelo.Exceptions.DatosInvalidosException;
+
 public class Caballo {
     private String nombre;
 
-    public Caballo(String nombre) {
+    public Caballo(String nombre) throws DatosInvalidosException {
         this.nombre = nombre;
+        validarNombre();
     }
 
     public String getNombre() {
         return nombre;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
     @Override
     public String toString() {
         return "Caballo [nombre=" + nombre + "]";
+    }
+
+    private void validarNombre() throws DatosInvalidosException{
+        if(nombre == null || nombre.isBlank()){
+            throw new DatosInvalidosException("El nombre del caballo es obligatorio.");
+        }
     }
 
 }
