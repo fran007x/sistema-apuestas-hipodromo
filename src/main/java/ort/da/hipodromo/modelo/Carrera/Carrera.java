@@ -3,7 +3,6 @@ package ort.da.hipodromo.modelo.Carrera;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import ort.da.hipodromo.modelo.Apuesta.Apuesta;
 import ort.da.hipodromo.modelo.Exceptions.DatosInvalidosException;
 import ort.da.hipodromo.modelo.Exceptions.EstadoCarreraInvalidoException;
 
@@ -29,6 +28,10 @@ public class Carrera {
 
     public int getNumero() {
         return numero;
+    }
+
+    public void setNumero(int numero) {
+        this.numero = numero;
     }
 
     public String getNombre(){
@@ -83,6 +86,10 @@ public class Carrera {
 
     public boolean estaCerrada(){
         return this.getEstado().equals(EstadoCarrera.Cerrada);
+    }
+
+    public boolean estaFinalizada(){
+        return this.getEstado().equals(EstadoCarrera.Finalizada);
     }
 
     public boolean permiteApuestas(){
@@ -178,6 +185,10 @@ public class Carrera {
         for(Registro registro : registros){
             registro.liquidarApuestas(caballoGanador);
         }
+    }
+
+    public double totalComision(double comision){
+        return totalApostado() * comision;
     }
 
 }
