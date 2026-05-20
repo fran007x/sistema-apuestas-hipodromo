@@ -78,4 +78,8 @@ public abstract class Usuario {
         }
     }
 
+    public boolean coincidenCredenciales(String nombreUsuario, String password){
+        return this.nombreUsuario.equals(nombreUsuario) && this.password.equals(password);
+    }
+
 }
