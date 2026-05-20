@@ -97,14 +97,14 @@ public class Carrera {
     }
 
 
-    public void abrir() throws EstadoCarreraInvalidoException{
+    public void abrir(){
         if (!estaDefinida()) {
             throw new EstadoCarreraInvalidoException("No se puede abrir esta carrera.");
         }
             estado = EstadoCarrera.Abierta; 
     }
 
-    public void cerrar(double comision) throws EstadoCarreraInvalidoException{
+    public void cerrar(double comision){
         if (!estaEstable()) {
             throw new EstadoCarreraInvalidoException("No es posible cerrar esta carrera.");
         }
@@ -113,7 +113,7 @@ public class Carrera {
         estado = EstadoCarrera.Cerrada;
     }
 
-    public void finalizar(Registro ganador) throws EstadoCarreraInvalidoException, DatosInvalidosException{
+    public void finalizar(Registro ganador){
         if (!estaCerrada()) {
             throw new EstadoCarreraInvalidoException("No se puede finalizar esta carrera.");
         }

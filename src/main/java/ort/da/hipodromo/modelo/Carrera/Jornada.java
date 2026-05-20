@@ -48,7 +48,7 @@ public class Jornada {
         return null;
     }
 
-    private void validarFecha() throws DatosInvalidosException{
+    private void validarFecha(){
         if (fecha == null) {
             throw new DatosInvalidosException("La fecha de la jornada es obligatoria.");
         }

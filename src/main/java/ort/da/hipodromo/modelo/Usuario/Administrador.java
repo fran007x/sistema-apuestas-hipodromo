@@ -1,6 +1,5 @@
 package ort.da.hipodromo.modelo.Usuario;
 
-import ort.da.hipodromo.modelo.Exceptions.DatosInvalidosException;
 
 public class Administrador extends Usuario {
     public Administrador(String nombreUsuario, String password, String nombreCompleto) {
@@ -8,7 +7,7 @@ public class Administrador extends Usuario {
     }
 
     @Override
-    public void validar() throws DatosInvalidosException{
+    public void validar(){
         super.validar();
 }
 }

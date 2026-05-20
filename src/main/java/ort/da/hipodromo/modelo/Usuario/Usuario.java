@@ -43,14 +43,14 @@ public abstract class Usuario {
                 + nombreCompleto + "]";
     }
 
-    public void validar() throws DatosInvalidosException{
+    public void validar(){
         validarCamposObligatorios();
         validarNombreUsuario();
         validarPassword();
         validarNombreCompleto();
     }
 
-    private void validarCamposObligatorios() throws DatosInvalidosException{
+    private void validarCamposObligatorios(){
         if(nombreUsuario == null || nombreUsuario.isBlank() 
         || password == null || password.isBlank() 
         || nombreCompleto == null || nombreCompleto.isBlank() ){
@@ -58,19 +58,19 @@ public abstract class Usuario {
         }
     }
 
-    private void validarNombreUsuario() throws DatosInvalidosException{
+    private void validarNombreUsuario(){
         if(nombreUsuario.length() < 2 || nombreUsuario.length() > 12 ){
             throw new DatosInvalidosException("El nombre de usuario debe tener entre 2 y 12 caracteres");
         }
     }
 
-    private void validarPassword() throws DatosInvalidosException{
+    private void validarPassword(){
         if(password.length() < 8){
             throw new DatosInvalidosException("La contraseña debe tener al menos 8 caracteres.");
         }
     }
 
-    private void validarNombreCompleto() throws DatosInvalidosException{
+    private void validarNombreCompleto(){
         String[] partes = nombreCompleto.trim().split("\\s+");
 
         if(partes.length < 2){

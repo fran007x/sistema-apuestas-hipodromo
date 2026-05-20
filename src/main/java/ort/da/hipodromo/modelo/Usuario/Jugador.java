@@ -21,14 +21,14 @@ public class Jugador extends Usuario {
         return "Jugador [saldo=" + saldo + "]";
     }
     
-    private void validarSaldo() throws DatosInvalidosException{
+    private void validarSaldo(){
         if(saldo < 0){
             throw new DatosInvalidosException("El saldo no puede ser negativo.");
         }
     }
 
     @Override
-    public void validar() throws DatosInvalidosException{
+    public void validar(){
         super.validar();
         validarSaldo();
     }
@@ -38,7 +38,7 @@ public class Jugador extends Usuario {
         return saldo >= monto;
     }
 
-    public void descontarSaldo(double monto) throws SaldoInsuficienteException{
+    public void descontarSaldo(double monto){
         if(!tieneSaldoSuficiente(monto)){
             throw new SaldoInsuficienteException("Saldo insuficiente.");
         }

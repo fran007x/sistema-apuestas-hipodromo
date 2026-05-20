@@ -21,7 +21,7 @@ public class SistemaUsuarios {
     }
 
 
-    public Usuario login(String nombreUsuario, String password) throws CredencialesInvalidasException {
+    public Usuario login(String nombreUsuario, String password) {
         Usuario usuario = buscarUsuario(nombreUsuario);
             if(usuario != null && usuario.coincidenCredenciales(nombreUsuario, password)){
                 return usuario;
@@ -30,14 +30,14 @@ public class SistemaUsuarios {
         throw new CredencialesInvalidasException("Acceso denegado");
     }
 
-    public void agregarJugador(String nombreUsuario,String password,String nombreCompleto,double saldo) throws DatosInvalidosException{
+    public void agregarJugador(String nombreUsuario,String password,String nombreCompleto,double saldo){
         if(buscarUsuario(nombreUsuario) != null){
             throw new DatosInvalidosException("El usuario ya existe");
         }
         usuarios.add(new Jugador(nombreUsuario,password,nombreCompleto,saldo));
     }
 
-    public void agregarAdministrador(String nombreUsuario,String password,String nombreCompleto) throws DatosInvalidosException{
+    public void agregarAdministrador(String nombreUsuario,String password,String nombreCompleto){
         if(buscarUsuario(nombreUsuario) != null){
             throw new DatosInvalidosException("El usuario ya existe");
         }

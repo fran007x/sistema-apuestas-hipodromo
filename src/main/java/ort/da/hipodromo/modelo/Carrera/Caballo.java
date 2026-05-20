@@ -5,7 +5,7 @@ import ort.da.hipodromo.modelo.Exceptions.DatosInvalidosException;
 public class Caballo {
     private String nombre;
 
-    public Caballo(String nombre) throws DatosInvalidosException {
+    public Caballo(String nombre){
         this.nombre = nombre;
         validarNombre();
     }
@@ -19,7 +19,7 @@ public class Caballo {
         return "Caballo [nombre=" + nombre + "]";
     }
 
-    private void validarNombre() throws DatosInvalidosException{
+    private void validarNombre(){
         if(nombre == null || nombre.isBlank()){
             throw new DatosInvalidosException("El nombre del caballo es obligatorio.");
         }
