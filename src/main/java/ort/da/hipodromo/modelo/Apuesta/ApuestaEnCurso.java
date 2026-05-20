@@ -1,5 +1,7 @@
 package ort.da.hipodromo.modelo.Apuesta;
 
+import java.util.Date;
+
 import ort.da.hipodromo.modelo.Carrera.Carrera;
 import ort.da.hipodromo.modelo.Carrera.Registro;
 import ort.da.hipodromo.modelo.Usuario.Jugador;
@@ -26,47 +28,47 @@ public class ApuestaEnCurso {
         return jugador;
     }
 
-    public void setJugador(Jugador jugador) {
-        this.jugador = jugador;
-    }
-
     public Registro getRegistro() {
         return registro;
-    }
-
-    public void setRegistro(Registro registro) {
-        this.registro = registro;
     }
 
     public ModalidadApuesta getModalidad() {
         return modalidad;
     }
 
-    public void setModalidad(ModalidadApuesta modalidad) {
-        this.modalidad = modalidad;
-    }
-
     public double getMonto() {
         return monto;
     }
 
+    
     public void setMonto(double monto) {
         this.monto = monto;
     }
 
-
     public Carrera getCarrera() {
         return carrera;
-    }
-
-    public void setCarrera(Carrera carrera) {
-        this.carrera = carrera;
     }
 
     @Override
     public String toString() {
         return "ApuestaEnCurso [jugador=" + jugador + ", carrera=" + carrera + ", registro=" + registro + ", modalidad="
                 + modalidad + ", monto=" + monto + "]";
+    }
+
+    public double costo(){
+        return modalidad.calcularCosto(monto);
+    }
+
+    public double posiblePago(double dividendoActual){
+        return modalidad.calcularPago(monto, dividendoActual, registro.totalApostado());
+    }
+
+    public boolean puedeConfirmarse(){
+        return carrera.permiteApuestas() && jugador.tieneSaldoSuficiente(costo());
+    }
+
+    public Apuesta confirmarApuesta(){
+        return new Apuesta(jugador, registro, modalidad, monto, new Date());
     }
 
 }
