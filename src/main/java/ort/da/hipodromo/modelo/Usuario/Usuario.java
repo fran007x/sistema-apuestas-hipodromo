@@ -59,7 +59,7 @@ public abstract class Usuario {
     }
 
     private void validarNombreUsuario() throws DatosInvalidosException{
-        if(nombreUsuario.length() < 2 && nombreUsuario.length() > 12 ){
+        if(nombreUsuario.length() < 2 || nombreUsuario.length() > 12 ){
             throw new DatosInvalidosException("El nombre de usuario debe tener entre 2 y 12 caracteres");
         }
     }
