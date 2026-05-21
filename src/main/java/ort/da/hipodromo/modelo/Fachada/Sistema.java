@@ -13,7 +13,7 @@ public class Sistema {
 
     private Sistema() {
         this.sistemaUsuarios = new SistemaUsuarios();
-        this.sistemaApuestas = new SistemaApuestas(0);
+        this.sistemaApuestas = new SistemaApuestas();
         this.sistemaCarreras = new SistemaCarreras();
     }
 

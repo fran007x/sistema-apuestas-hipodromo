@@ -9,12 +9,12 @@ import ort.da.hipodromo.modelo.Apuesta.ModalidadApuesta;
 public class SistemaApuestas {
     private List<ApuestaEnCurso> apuestasEnCurso;
     private List<ModalidadApuesta> modalidades;
-    private double comision = 0.10;
+    private double comision;
     
-    public SistemaApuestas(double comision) {
+    public SistemaApuestas() {
         this.apuestasEnCurso = new ArrayList<>();
         this.modalidades = new ArrayList<>();
-        this.comision = comision;
+        this.comision = 0.10;
     }
 
     public List<ApuestaEnCurso> getApuestasEnCurso() {
@@ -28,6 +28,5 @@ public class SistemaApuestas {
     public double getComision() {
         return comision;
     }
-
     
 }
