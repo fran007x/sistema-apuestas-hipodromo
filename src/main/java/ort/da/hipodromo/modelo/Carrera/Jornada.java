@@ -4,23 +4,25 @@ import java.util.List;
 
 import ort.da.hipodromo.modelo.Exceptions.DatosInvalidosException;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Jornada {
     private List<Carrera> carreras;
-    private Date fecha;
+    private LocalDate fecha;
 
-    public Jornada(List<Carrera> carreras, Date fecha) {
-        this.carreras = carreras;
+    public Jornada(LocalDate fecha) {
+        this.carreras = new ArrayList<>();
         this.fecha = fecha;
+
+        validarFecha();
     }
 
-    public Date getFecha() {
+    public LocalDate getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) throws DatosInvalidosException {
+    public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
         validarFecha();
     }
@@ -39,7 +41,7 @@ public class Jornada {
         carreras.add(carrera);
     }
 
-    public Carrera buscar(int numero){
+    public Carrera buscarCarrera(int numero){
         for(Carrera carrera : carreras){
             if(carrera.getNumero() == numero){
                 return carrera;
@@ -54,7 +56,7 @@ public class Jornada {
         }
     }
 
-    public boolean esDeFecha(Date fecha) {
+    public boolean esDeFecha(LocalDate fecha) {
         return fecha != null && this.fecha.equals(fecha);
     }
 
@@ -139,4 +141,15 @@ public class Jornada {
         return proximas;
     }
 
+    public List<Carrera> carrerasDisponiblesParaApostar(){
+        List<Carrera> disponibles = new ArrayList<>();
+
+        for(Carrera carrera : carreras){
+            if(carrera.permiteApuestas()){
+                disponibles.add(carrera);
+            }
+        }
+        return disponibles;
+    }
+    
 }

@@ -191,4 +191,12 @@ public class Carrera {
         return totalApostado() * comision;
     }
 
+    public Registro obtenerRegistro(int numeroCaballo){
+        for(Registro registro : registros){
+            if(registro.getNumeroCaballo() == numeroCaballo){
+                return registro;
+            }
+        }
+        return null;
+    }
 }
