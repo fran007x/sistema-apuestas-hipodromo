@@ -1,6 +1,5 @@
 package ort.da.hipodromo.modelo.Sistemas;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,6 +86,8 @@ public class SistemaApuestas {
         Apuesta apuesta = apuestaEnCurso.confirmarApuesta();
 
         apuesta.getRegistro().agregarApuesta(apuesta);
+
+        apuestaEnCurso.getCarrera().actualizarEstadoPorDividendos(comision);
 
         apuestasEnCurso.remove(apuestaEnCurso);
 
