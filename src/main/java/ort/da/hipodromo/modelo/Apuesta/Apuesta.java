@@ -1,6 +1,6 @@
 package ort.da.hipodromo.modelo.Apuesta;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import ort.da.hipodromo.modelo.Carrera.Registro;
 import ort.da.hipodromo.modelo.Usuario.Jugador;
@@ -14,11 +14,11 @@ public class Apuesta {
     private double costo;
     private double montoCobrado;
     private double dividendoFinal;
-    private Date fecha;
+    private LocalDateTime fecha;
 
 
     public Apuesta(Jugador jugador, Registro registro, ModalidadApuesta modalidad, double monto,
-            Date fecha) {
+            LocalDateTime fecha) {
         this.jugador = jugador;
         this.registro = registro;
         this.modalidad = modalidad;
@@ -59,7 +59,7 @@ public class Apuesta {
         return dividendoFinal;
     }
 
-    public Date getFecha() {
+    public LocalDateTime getFecha() {
         return fecha;
     }
 

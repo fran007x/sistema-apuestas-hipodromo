@@ -1,6 +1,6 @@
 package ort.da.hipodromo.modelo.Apuesta;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import ort.da.hipodromo.modelo.Carrera.Carrera;
 import ort.da.hipodromo.modelo.Carrera.Registro;
@@ -68,7 +68,7 @@ public class ApuestaEnCurso {
     }
 
     public Apuesta confirmarApuesta(){
-        return new Apuesta(jugador, registro, modalidad, monto, new Date());
+        return new Apuesta(jugador, registro, modalidad, monto, LocalDateTime.now());
     }
 
 }
