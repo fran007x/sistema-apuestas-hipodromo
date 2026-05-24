@@ -15,10 +15,7 @@ public class Carrera {
     private LocalDateTime horaFinalizacion;
 
 
-    
-
-    public Carrera(int numero,String nombre, List<Registro> registros) {
-        this.numero = numero;
+    public Carrera(String nombre, List<Registro> registros) {
         this.nombre = nombre;
         this.estado = EstadoCarrera.Definida;
         this.registros = registros;

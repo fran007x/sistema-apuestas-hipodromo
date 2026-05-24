@@ -1,40 +1,32 @@
 package ort.da.hipodromo.modelo.Carrera;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ort.da.hipodromo.modelo.Apuesta.Apuesta;
 
 public class Registro {
     private int numeroCaballo;
-    private Carrera carrera;
+    private Caballo caballo;
     private List<Apuesta> apuestas;
 
-    public Registro(int numeroCaballo, Carrera carrera, List<Apuesta> apuestas) {
+    public Registro(int numeroCaballo, Caballo caballo) {
         this.numeroCaballo = numeroCaballo;
-        this.carrera = carrera;
-        this.apuestas = apuestas;
-    }
-    
-    public List<Apuesta> getApuestas() {
-        return apuestas;
+        this.caballo = caballo;
+        this.apuestas = new ArrayList<>();
     }
 
     public int getNumeroCaballo() {
         return numeroCaballo;
     }
-
-    public void setNumeroCaballo(int numeroCaballo) {
-        this.numeroCaballo = numeroCaballo;
+    
+    public Caballo getCaballo() {
+        return caballo;
     }
 
-    public Carrera getCarrera() {
-        return carrera;
+    public List<Apuesta> getApuestas() {
+        return apuestas;
     }
-
-    public void setCarrera(Carrera carrera) {
-        this.carrera = carrera;
-    }
-
 
     public double totalApostado(){
         double total = 0;
@@ -90,6 +82,12 @@ public class Registro {
         }
     }
 
+    
+    @Override
+    public String toString() {
+        return "Registro [numeroCaballo=" + numeroCaballo + ", caballo=" + caballo + ", apuestas=" + apuestas + "]";
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -109,4 +107,5 @@ public class Registro {
     public int hashCode() {
         return Integer.hashCode(numeroCaballo);
     }
+
 }
