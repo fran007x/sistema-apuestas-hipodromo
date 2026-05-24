@@ -9,6 +9,7 @@ import ort.da.hipodromo.modelo.Apuesta.ModalidadApuesta;
 import ort.da.hipodromo.modelo.Carrera.Carrera;
 import ort.da.hipodromo.modelo.Carrera.Registro;
 import ort.da.hipodromo.modelo.Exceptions.CredencialesInvalidasException;
+import ort.da.hipodromo.modelo.Exceptions.DatosInvalidosException;
 import ort.da.hipodromo.modelo.Exceptions.EstadoCarreraInvalidoException;
 import ort.da.hipodromo.modelo.Exceptions.MontoInvalidoException;
 import ort.da.hipodromo.modelo.Exceptions.SaldoInsuficienteException;
@@ -51,6 +52,21 @@ public class SistemaApuestas {
     }
 
     public ApuestaEnCurso crearApuestaEnCurso(Jugador jugador, Carrera carrera, Registro registro, ModalidadApuesta modalidad, double monto){
+        if(jugador == null){
+            throw new DatosInvalidosException("El jugador no existe.");
+        }
+        if(carrera == null){
+            throw new DatosInvalidosException("La carrera no existe.");
+        }
+
+        if(registro == null){
+            throw new DatosInvalidosException("El caballo indicado no existe en la carrera.");
+        }
+
+        if(modalidad == null){
+            throw new DatosInvalidosException("La modalidad no existe.");
+        }
+
         if(monto < 1){
             throw new MontoInvalidoException("Monto invalido.");
         }
