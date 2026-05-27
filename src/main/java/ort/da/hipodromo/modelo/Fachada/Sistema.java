@@ -13,8 +13,9 @@ import ort.da.hipodromo.modelo.Carrera.Registro;
 import ort.da.hipodromo.modelo.Sistemas.SistemaApuestas;
 import ort.da.hipodromo.modelo.Sistemas.SistemaCarreras;
 import ort.da.hipodromo.modelo.Sistemas.SistemaUsuarios;
+import ort.da.hipodromo.modelo.Usuario.Administrador;
 import ort.da.hipodromo.modelo.Usuario.Jugador;
-import ort.da.hipodromo.modelo.Usuario.Usuario;
+import ort.da.hipodromo.modelo.Usuario.RegistroIngreso;
 
 public class Sistema {
     private static Sistema instancia;
@@ -36,20 +37,37 @@ public class Sistema {
         return instancia;
     }
 
-    public Usuario login(String nombreUsuario, String password){
-        return sistemaUsuarios.login(nombreUsuario, password);
+    public RegistroIngreso loginJugador(String nombreUsuario,String password){
+        return sistemaUsuarios.loginJugador(nombreUsuario, password);
     }
 
     public void agregarJugador(String nombreUsuario,String password,String nombreCompleto,double saldo){
         sistemaUsuarios.agregarJugador(nombreUsuario, password, nombreCompleto, saldo);
     }
 
+    public Administrador loginAdministrador(String nombreUsuario,String password){
+        return sistemaUsuarios.loginAdministrador(nombreUsuario, password);
+    }
+
+
     public void agregarAdministrador(String nombreUsuario,String password,String nombreCompleto){
         sistemaUsuarios.agregarAdministrador(nombreUsuario, password, nombreCompleto);
     }
 
-    public Usuario buscarUsuario(String nombreUsuario){
-        return sistemaUsuarios.buscarUsuario(nombreUsuario);
+    public Jugador buscarJugador(String nombreUsuario){
+        return sistemaUsuarios.buscarJugador(nombreUsuario);
+    }
+
+    public Administrador buscarAdministrador(String nombreUsuario){
+        return sistemaUsuarios.buscarAdministrador(nombreUsuario);
+    }
+
+     public void logoutJugador(RegistroIngreso registro) {
+        sistemaUsuarios.logoutJugador(registro);
+    }
+
+    public List<RegistroIngreso> getJugadoresActivos(){
+        return sistemaUsuarios.getJugadoresActivos();
     }
 
     public void agregarJornada(LocalDate fecha){
@@ -117,9 +135,7 @@ public class Sistema {
     }
 
     public ApuestaEnCurso crearApuestaEnCurso(String nombreUsuario,LocalDate fechaJornada, int numeroCarrera, int numeroRegistro, String nombreModalidad, double monto){
-        Usuario usuario = this.buscarUsuario(nombreUsuario);
-        Jugador jugador = (Jugador) usuario;
-
+        Jugador jugador = this.buscarJugador(nombreUsuario);
         Carrera carrera = this.buscarCarrera(fechaJornada, numeroCarrera);
         Registro registro = this.buscarRegistro(fechaJornada, numeroCarrera, numeroRegistro);
         ModalidadApuesta modalidad = this.buscarModalidad(nombreModalidad);
