@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+
 /**
  * Contenedor de comandos que se envían al frontend.
  * Representa el contrato explícito: todo endpoint retorna un objeto Commands
