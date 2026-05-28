@@ -130,6 +130,10 @@ public class Sistema {
         sistemaApuestas.agregarModalidad(modalidad);
     }
 
+    public List<ModalidadApuesta> getModalidades(){  
+        return sistemaApuestas.getModalidades();
+    }
+
     public ModalidadApuesta buscarModalidad(String nombre){
         return sistemaApuestas.buscarModalidad(nombre);
     }
