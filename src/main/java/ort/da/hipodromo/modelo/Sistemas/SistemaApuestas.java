@@ -101,6 +101,8 @@ public class SistemaApuestas {
 
         Apuesta apuesta = apuestaEnCurso.confirmarApuesta();
 
+        jugador.agregarApuesta(apuesta);
+
         apuesta.getRegistro().agregarApuesta(apuesta);
 
         apuestaEnCurso.getCarrera().actualizarEstadoPorDividendos(comision);
