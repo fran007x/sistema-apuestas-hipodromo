@@ -203,4 +203,14 @@ public class Carrera {
         }
         return caballoGanador.getDividendoFinal();
     }
+
+    public int cantidadApuestas(){
+        int total = 0;
+
+        for(Registro registro : registros){
+            total += registro.cantidadApuestas();
+        }
+
+        return total;
+    }
 }
