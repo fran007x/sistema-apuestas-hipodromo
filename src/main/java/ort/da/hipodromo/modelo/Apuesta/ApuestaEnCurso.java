@@ -59,8 +59,8 @@ public class ApuestaEnCurso {
         return modalidad.calcularCosto(monto);
     }
 
-    public double posiblePago(double dividendoActual){
-        return modalidad.calcularPago(monto, dividendoActual, registro.totalApostado());
+    public double posiblePago(double comision){
+        return modalidad.calcularPago(monto, dividendoActual(comision), registro.totalApostado());
     }
 
     public boolean puedeConfirmarse(){
@@ -69,6 +69,10 @@ public class ApuestaEnCurso {
 
     public Apuesta confirmarApuesta(){
         return new Apuesta(jugador, registro, modalidad, monto, LocalDateTime.now());
+    }
+
+    public double dividendoActual(double comision){
+        return registro.calcularDividendo(carrera.totalApostado(), comision);
     }
 
 }

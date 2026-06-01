@@ -27,12 +27,9 @@ public class PresentadorTableroAdministrador {
         Jornada jornadaActual = sistema.jornadaActual();
 
         return Commands.create(datosJornadaActual(jornadaActual),carrerasFinalizadas(jornadaActual),
-                                proximasCarreras(jornadaActual));
+                            proximasCarreras(jornadaActual));
 
     }
-
-
-
 
 
     public Command datosJornadaActual(Jornada jornada){
