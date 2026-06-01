@@ -150,6 +150,10 @@ public class Sistema {
         return jornadaActual().proximasCarreras();
     }
 
+    public double getComision(){
+        return sistemaApuestas.getComision();
+    }
+
     public void abrirCarrera(LocalDate fechaJornada, int numeroCarrera){
         sistemaCarreras.abrirCarrera(fechaJornada, numeroCarrera);
     }
