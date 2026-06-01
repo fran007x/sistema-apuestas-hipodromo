@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import ort.da.hipodromo.Dtos.CarreraDisponibleDto;
 import ort.da.hipodromo.modelo.Carrera.Caballo;
 import ort.da.hipodromo.modelo.Carrera.Carrera;
 import ort.da.hipodromo.modelo.Carrera.Jornada;
@@ -88,8 +89,8 @@ public class SistemaCarreras {
         return carrera.obtenerRegistro(numeroRegistro);
     }
 
-    public List<Carrera> carrerasDisponiblesParaApostar(){
-        List<Carrera> disponibles = new ArrayList<>();
+    public List<CarreraDisponibleDto> carrerasDisponiblesParaApostar(){
+        List<CarreraDisponibleDto> disponibles = new ArrayList<>();
 
         for(Jornada jornada : jornadas){
             disponibles.addAll(jornada.carrerasDisponiblesParaApostar());

@@ -52,7 +52,7 @@ public class PresentadorTableroJugador {
     }
 
     public Command carrerasDisponiblesParaApuestas(){
-        return new Command("carrerasDisponiblesParaApuestas",CarreraDto.fromList(sistema.carrerasDisponiblesParaApostar()));
+        return new Command("carrerasDisponiblesParaApuestas",sistema.carrerasDisponiblesParaApostar());
     }
 
     public Command modalidadesApuestas(){

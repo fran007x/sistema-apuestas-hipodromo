@@ -3,6 +3,7 @@ package ort.da.hipodromo.modelo.Fachada;
 import java.time.LocalDate;
 import java.util.List;
 
+import ort.da.hipodromo.Dtos.CarreraDisponibleDto;
 import ort.da.hipodromo.modelo.Apuesta.Apuesta;
 import ort.da.hipodromo.modelo.Apuesta.ApuestaEnCurso;
 import ort.da.hipodromo.modelo.Apuesta.ModalidadApuesta;
@@ -98,7 +99,7 @@ public class Sistema {
         return sistemaCarreras.buscarRegistro(fechaJornada, numeroCarrera, numeroRegistro);
     }
 
-    public List<Carrera> carrerasDisponiblesParaApostar(){
+    public List<CarreraDisponibleDto> carrerasDisponiblesParaApostar(){
         return sistemaCarreras.carrerasDisponiblesParaApostar();
     }
 

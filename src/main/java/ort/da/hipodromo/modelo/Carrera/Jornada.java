@@ -3,6 +3,7 @@ package ort.da.hipodromo.modelo.Carrera;
 import java.util.List;
 
 import ort.da.hipodromo.modelo.Exceptions.DatosInvalidosException;
+import ort.da.hipodromo.Dtos.CarreraDisponibleDto;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -141,12 +142,12 @@ public class Jornada {
         return proximas;
     }
 
-    public List<Carrera> carrerasDisponiblesParaApostar(){
-        List<Carrera> disponibles = new ArrayList<>();
+    public List<CarreraDisponibleDto> carrerasDisponiblesParaApostar(){
+        List<CarreraDisponibleDto> disponibles = new ArrayList<>();
 
         for(Carrera carrera : carreras){
             if(carrera.permiteApuestas()){
-                disponibles.add(carrera);
+                disponibles.add(new CarreraDisponibleDto(this, carrera));
             }
         }
         return disponibles;
