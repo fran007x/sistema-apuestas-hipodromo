@@ -114,6 +114,42 @@ public class Sistema {
         return sistemaCarreras.jornadaAnterior(fechaActual);
     }
 
+    public double totalApostadoJornadaActual(){
+    return jornadaActual().totalApostado();
+    }
+
+    public double totalPagadoJornadaActual(){
+        return jornadaActual().totalPagado();
+    }
+
+    public double totalComisionesJornadaActual(){
+        return jornadaActual().totalComisiones(sistemaApuestas.getComision());
+    }
+
+    public double balanceGeneralJornadaActual(){
+        return jornadaActual().balanceGeneral();
+    }
+
+    public int cantidadCarrerasJornadaActual(){
+        return jornadaActual().cantidadCarreras();
+    }
+
+    public int cantidadCarrerasFinalizadasJornadaActual(){
+        return jornadaActual().cantidadCarrerasFinalizadas();
+    }
+
+    public int cantidadCarrerasPorCorrerJornadaActual(){
+        return jornadaActual().cantidadCarrerasPorCorrer();
+    }
+
+    public List<Carrera> carrerasFinalizadasJornadaActual(){
+        return jornadaActual().carrerasFinalizadasOrdenadasDesc();
+    }
+
+    public List<Carrera> proximasCarrerasJornadaActual(){
+        return jornadaActual().proximasCarreras();
+    }
+
     public void abrirCarrera(LocalDate fechaJornada, int numeroCarrera){
         sistemaCarreras.abrirCarrera(fechaJornada, numeroCarrera);
     }

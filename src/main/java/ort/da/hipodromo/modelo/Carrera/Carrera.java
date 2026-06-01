@@ -174,7 +174,7 @@ public class Carrera {
     private void guardarDividendosFinalesEnApuestas(double comision){
         for(Registro registro : registros){
             double dividendoFinal = registro.calcularDividendo(totalApostado(), comision);
-            registro.guardarDividendoFinalEnApuestas(dividendoFinal);
+            registro.guardarDividendoFinal(dividendoFinal);
         }
     }
 
@@ -195,5 +195,12 @@ public class Carrera {
             }
         }
         return null;
+    }
+
+    public double dividendoFinalGanador(){
+        if(caballoGanador == null){
+            return 0;
+        }
+        return caballoGanador.getDividendoFinal();
     }
 }

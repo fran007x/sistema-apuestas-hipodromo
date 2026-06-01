@@ -9,11 +9,13 @@ public class Registro {
     private int numeroCaballo;
     private Caballo caballo;
     private List<Apuesta> apuestas;
+    private double dividendoFinal;
 
     public Registro(int numeroCaballo, Caballo caballo) {
         this.numeroCaballo = numeroCaballo;
         this.caballo = caballo;
         this.apuestas = new ArrayList<>();
+        this.dividendoFinal = 0;
     }
 
     public int getNumeroCaballo() {
@@ -26,6 +28,10 @@ public class Registro {
 
     public List<Apuesta> getApuestas() {
         return apuestas;
+    }
+
+    public double getDividendoFinal() {
+        return dividendoFinal;
     }
 
     public double totalApostado(){
@@ -70,7 +76,9 @@ public class Registro {
         apuestas.add(apuesta);
     }
 
-    public void guardarDividendoFinalEnApuestas(double dividendoFinal){
+    public void guardarDividendoFinal(double dividendoFinal){
+        this.dividendoFinal = dividendoFinal;
+        
         for(Apuesta apuesta : apuestas){
             apuesta.guardarDividendoFinal(dividendoFinal);
         }
