@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import ort.da.hipodromo.Dtos.ApuestaDto;
-import ort.da.hipodromo.Dtos.CarreraDto;
 import ort.da.hipodromo.Dtos.ModalidadDto;
 import ort.da.hipodromo.Presentadores.Comandos.Command;
 import ort.da.hipodromo.Presentadores.Comandos.Commands;
@@ -25,7 +24,7 @@ public class PresentadorTableroJugador {
 
     @RequestMapping("/inicioTableroJugador")
     public Commands inicioCasoUsoTableroJugador(@SessionAttribute("registroIngreso") RegistroIngreso registro) {
-        Jugador jugador = registro.getUsuarioLogueado();
+        Jugador jugador = registro.getJugadorLogueado();
         
         return Commands.create(nombreJugador(jugador), saldoActual(jugador), montoTotalApostado(jugador),
                             montoTotalGanado(jugador), carrerasDisponiblesParaApuestas(), modalidadesApuestas(), 

@@ -14,7 +14,7 @@ public class RegistroIngreso {
         return fecha;
     }
 
-    public Jugador getUsuarioLogueado() {
+    public Jugador getJugadorLogueado() {
         return jugadorLogueado;
     }
 }
