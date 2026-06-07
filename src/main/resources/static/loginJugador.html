@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ingreso Jugador - Hipódromo</title>
+    <link rel="stylesheet" href="/css/loginJugador.css">
+</head>
+<body>
+
+    <main class="login-wrapper">
+        <section class="login-card">
+            <div class="logo">🏇</div>
+
+            <h1>Hipódromo MalaPata</h1>
+            <p class="subtitle">Zona de jugadores</p>
+
+            <form id="formLogin">
+                <label for="nombreUsuario">Nombre de usuario</label>
+                <input type="text" id="nombreUsuario" name="nombreUsuario" autocomplete="username" required>
+
+                <label for="password">Contraseña</label>
+                <input type="password" id="password" name="password" autocomplete="current-password" required>
+
+                <button type="submit">Ingresar</button>
+            </form>
+
+            <p id="mensajeError" class="mensaje-error"></p>
+        </section>
+    </main>
+
+    <script type="module">
+        import CommandDispatcher from "/js/CommandDispatcher.js";
+
+        const view = CommandDispatcher.registerView("LoginJugador", {
+            urlInicio: "/hipodromo/inicioLogin",
+            onException: mostrarError,
+            onError: (status, text) => mostrarError(text || "Error inesperado")
+        });
+
+        view.handler("accesoPermitido", () => {
+            window.location.href = "/tableroJugador.html";
+        });
+
+        view.handler("mensajeError", (mensaje) => {
+            mostrarError(mensaje);
+        });
+
+        document.getElementById("formLogin").addEventListener("submit", function(e) {
+            e.preventDefault();
+
+            CommandDispatcher.submit("/hipodromo/login", {
+                nombreUsuario: document.getElementById("nombreUsuario").value,
+                password: document.getElementById("password").value
+            });
+        });
+
+        function mostrarError(mensaje) {
+            document.getElementById("mensajeError").textContent = mensaje;
+        }
+
+        CommandDispatcher.startView(view);
+    </script>
+
+</body>
+</html>
