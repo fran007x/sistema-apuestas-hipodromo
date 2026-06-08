@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
+import jakarta.servlet.http.HttpSession;
 import ort.da.hipodromo.Dtos.CarreraFinalizadaDto;
 import ort.da.hipodromo.Dtos.JornadaAdminDto;
 import ort.da.hipodromo.Dtos.ProximaCarreraDto;
@@ -12,6 +13,11 @@ import ort.da.hipodromo.Presentadores.Comandos.Commands;
 import ort.da.hipodromo.modelo.Carrera.Jornada;
 import ort.da.hipodromo.modelo.Fachada.Sistema;
 import ort.da.hipodromo.modelo.Usuario.Administrador;
+
+import java.time.LocalDate;
+
+import org.springframework.web.bind.annotation.PostMapping;
+
 
 @RestController
 @RequestMapping("/administracion")
@@ -23,14 +29,42 @@ public class PresentadorTableroAdministrador {
     }
 
     @RequestMapping("/inicioTableroAdmin")
-    public Commands inicioCasoUsoTableroAdmin(@SessionAttribute("administrador") Administrador admin) {
-        Jornada jornadaActual = sistema.jornadaActual();
+    public Commands inicioCasoUsoTableroAdmin(@SessionAttribute("administrador") Administrador admin, HttpSession session){ 
+        Jornada jornada = sistema.jornadaActual();
 
-        return Commands.create(datosJornadaActual(jornadaActual),carrerasFinalizadas(jornadaActual),
-                            proximasCarreras(jornadaActual));
+        session.setAttribute("fechaJornadaSeleccionada", jornada.getFecha());
 
+        return comandosTablero(jornada);
     }
 
+    @PostMapping("/jornadaAnterior")
+    public Commands jornadaAnterior(@SessionAttribute("fechaJornadaSeleccionada") LocalDate fechaSeleccionada, HttpSession session){
+        Jornada jornada = sistema.jornadaAnterior(fechaSeleccionada);
+        
+        if(jornada == null){
+            return Commands.create(mensajeError("No hay jornadas anteriores a la seleccionada"));
+        }
+
+        session.setAttribute("fechaJornadaSeleccionada", jornada.getFecha());
+        return comandosTablero(jornada);
+    }
+
+    @PostMapping("/jornadaSiguiente")
+    public Commands jornadaSiguiente(@SessionAttribute("fechaJornadaSeleccionada") LocalDate fechaSeleccionada, HttpSession session){
+        Jornada jornada = sistema.jornadaSiguiente(fechaSeleccionada);
+        
+        if(jornada == null){
+            return Commands.create(mensajeError("No hay jornadas siguientes a la seleccionada"));
+        }
+
+        session.setAttribute("fechaJornadaSeleccionada", jornada.getFecha());
+        return comandosTablero(jornada);
+    }
+    
+
+    private Commands comandosTablero(Jornada jornada){
+        return Commands.create(datosJornadaActual(jornada), carrerasFinalizadas(jornada), proximasCarreras(jornada));
+    }
 
     public Command datosJornadaActual(Jornada jornada){
         return new Command("datosJornadaActual", new JornadaAdminDto(jornada, sistema.getComision()));
@@ -42,6 +76,10 @@ public class PresentadorTableroAdministrador {
 
     public Command proximasCarreras(Jornada jornada){
         return new Command("proximasCarreras", ProximaCarreraDto.fromList(jornada.proximasCarreras()));
+    }
+
+    public Command mensajeError(String texto){
+        return new Command("mensajeError", texto);
     }
 
 }

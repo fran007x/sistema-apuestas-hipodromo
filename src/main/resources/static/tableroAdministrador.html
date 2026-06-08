@@ -23,10 +23,16 @@
             <p>Resumen general de la jornada seleccionada</p>
         </div>
 
-        <div class="fecha-card">
+       <div class="fecha-card">
+        <button id="btnJornadaAnterior" class="btn-jornada">◀</button>
+
+        <div>
             <span>Jornada</span>
             <strong id="fechaJornada">-</strong>
         </div>
+
+        <button id="btnJornadaSiguiente" class="btn-jornada">▶</button>
+    </div>
     </section>
 
     <section class="metricas">
@@ -201,6 +207,14 @@
 
     document.getElementById("btnLogout").addEventListener("click", () => {
         CommandDispatcher.submit("/administracion/logout", {});
+    });
+
+    document.getElementById("btnJornadaAnterior").addEventListener("click", () => {
+    CommandDispatcher.submit("/administracion/jornadaAnterior", {});
+    });
+
+    document.getElementById("btnJornadaSiguiente").addEventListener("click", () => {
+        CommandDispatcher.submit("/administracion/jornadaSiguiente", {});
     });
 
     view.handler("sesionFinalizada", () => {
