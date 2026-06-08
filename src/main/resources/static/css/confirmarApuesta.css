@@ -1,0 +1,193 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    background: #0f1722;
+    color: #e8edf5;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.confirmacion-wrapper {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 34px 18px;
+}
+
+.confirmacion-card {
+    width: 520px;
+    background: #1f2633;
+    border: 1px solid #2d3849;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
+}
+
+.card-header {
+    background: #173a5f;
+    padding: 24px 26px;
+}
+
+.card-header h1 {
+    color: #f1c84b;
+    font-size: 23px;
+    margin-bottom: 8px;
+}
+
+.card-header p {
+    color: #aeb8c8;
+    font-size: 14px;
+}
+
+.detalle-card,
+.password-card {
+    margin: 24px 26px 18px;
+    background: #171d27;
+    border: 1px solid #2d3849;
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.fila {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 11px 0;
+    border-bottom: 1px solid #2a3444;
+}
+
+.fila:last-child {
+    border-bottom: none;
+}
+
+.fila span {
+    color: #94a3b8;
+}
+
+.fila strong {
+    color: #ffffff;
+    text-align: right;
+}
+
+.amarillo {
+    color: #f1c84b !important;
+}
+
+.badge {
+    background: #3a2f16;
+    color: #f1c84b !important;
+    border: 1px solid #5c4a20;
+    padding: 5px 10px;
+    border-radius: 16px;
+    text-transform: uppercase;
+    font-size: 12px;
+}
+
+.ganancia-card {
+    margin: 18px 26px;
+    background: #17342d;
+    border: 1px solid #256b50;
+    border-radius: 9px;
+    padding: 22px;
+    text-align: center;
+}
+
+.ganancia-card span {
+    display: block;
+    color: #a7cbbd;
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+
+.ganancia-card strong {
+    display: block;
+    color: #28d17c;
+    font-size: 34px;
+    margin-bottom: 8px;
+}
+
+.ganancia-card p {
+    color: #8fa99f;
+    font-size: 12px;
+}
+
+.password-card h2 {
+    color: #c9d2df;
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+}
+
+.password-card label {
+    display: block;
+    color: #aeb8c8;
+    font-size: 13px;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.password-card input {
+    width: 100%;
+    background: #111722;
+    color: #ffffff;
+    border: 1px solid #303b4d;
+    border-radius: 6px;
+    padding: 12px;
+    outline: none;
+}
+
+.password-card input:focus {
+    border-color: #f1c84b;
+}
+
+.btn-confirmar,
+.btn-cancelar {
+    width: calc(100% - 52px);
+    margin-left: 26px;
+    margin-right: 26px;
+    border: none;
+    border-radius: 7px;
+    padding: 13px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn-confirmar {
+    background: #f1c84b;
+    color: #111722;
+    margin-top: 2px;
+}
+
+.btn-confirmar:hover {
+    background: #d9b339;
+}
+
+.btn-cancelar {
+    background: transparent;
+    color: #d5deec;
+    border: 1px solid #354154;
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
+
+.btn-cancelar:hover {
+    border-color: #f1c84b;
+    color: #f1c84b;
+}
+
+.mensaje-error {
+    min-height: 20px;
+    color: #ff7676;
+    font-weight: bold;
+    text-align: center;
+    margin: 0 26px 22px;
+}

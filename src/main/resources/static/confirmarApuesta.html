@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmar Apuesta</title>
+    <link rel="stylesheet" href="/css/confirmarApuesta.css">
+</head>
+<body>
+
+<main class="confirmacion-wrapper">
+    <section class="confirmacion-card">
+
+        <header class="card-header">
+            <h1>💰 Confirmar Apuesta</h1>
+            <p>Revisá los detalles antes de confirmar. Esta operación descontará el monto de tu saldo.</p>
+        </header>
+
+        <section class="detalle-card">
+            <div class="fila">
+                <span>N° de Carrera</span>
+                <strong id="numeroCarrera">-</strong>
+            </div>
+
+            <div class="fila">
+                <span>Caballo</span>
+                <strong id="caballo">-</strong>
+            </div>
+
+            <div class="fila">
+                <span>Tipo de Apuesta</span>
+                <strong id="modalidad" class="badge">-</strong>
+            </div>
+
+            <div class="fila">
+                <span>Dividendo Actual</span>
+                <strong id="dividendoActual" class="amarillo">-</strong>
+            </div>
+
+            <div class="fila">
+                <span>Monto Apostado</span>
+                <strong id="montoApostado" class="amarillo">$0</strong>
+            </div>
+
+            <div class="fila">
+                <span>Monto a debitar del saldo</span>
+                <strong id="montoAPagar" class="amarillo">$0</strong>
+            </div>
+        </section>
+
+        <section class="ganancia-card">
+            <span>🏆 Cobrarías si el caballo gana</span>
+            <strong id="montoACobrar">$0</strong>
+            <p>Cálculo realizado en base al dividendo actual. El monto final puede variar.</p>
+        </section>
+
+        <section class="password-card">
+            <h2>🔐 Ingresar contraseña</h2>
+
+            <label for="password">Contraseña</label>
+            <input type="password" id="password">
+        </section>
+
+        <button id="btnConfirmar" class="btn-confirmar">
+            ✅ Confirmar Apuesta
+        </button>
+
+        <button id="btnCancelar" class="btn-cancelar">
+            ✖ Descartar Apuesta
+        </button>
+
+        <p id="mensajeError" class="mensaje-error"></p>
+
+    </section>
+</main>
+
+<script type="module">
+    import CommandDispatcher from "/js/CommandDispatcher.js";
+
+    const params = new URLSearchParams(window.location.search);
+
+    const view = CommandDispatcher.registerView("ConfirmarApuesta", {
+        urlInicio: "/hipodromo/inicioCasoUsoConfirmarApuesta",
+        dataInicio: {
+            fechaJornada: params.get("fechaJornada"),
+            numeroCarrera: params.get("numeroCarrera"),
+            numeroCaballo: params.get("numeroCaballo"),
+            modalidad: params.get("modalidad"),
+            monto: params.get("monto")
+        },
+        onException: mostrarError,
+        onError: (status, text) => mostrarError(text || "Error inesperado")
+    });
+
+    view.handler("datosApuestaEnCurso", (apuesta) => {
+        document.getElementById("numeroCarrera").textContent =
+            `${apuesta.numeroCarrera} — ${apuesta.nombreCarrera}`;
+
+        document.getElementById("caballo").textContent =
+            `N° ${apuesta.numeroCaballo} — ${apuesta.nombreCaballo}`;
+
+        document.getElementById("modalidad").textContent =
+            apuesta.modalidad;
+
+        document.getElementById("dividendoActual").textContent =
+            formatoNumero(apuesta.dividendoActual);
+
+        document.getElementById("montoApostado").textContent =
+            formatoDinero(apuesta.montoApostado);
+
+        document.getElementById("montoAPagar").textContent =
+            formatoDinero(apuesta.montoAPagar);
+
+        document.getElementById("montoACobrar").textContent =
+            formatoDinero(apuesta.montoACobrar);
+    });
+
+    view.handler("apuestaConfirmada", () => {
+        window.location.href = "/tableroJugador.html";
+    });
+
+    view.handler("apuestaCancelada", () => {
+        window.location.href = "/tableroJugador.html";
+    });
+
+    view.handler("mensajeError", (mensaje) => {
+        mostrarError(mensaje);
+    });
+
+    document.getElementById("btnConfirmar").addEventListener("click", () => {
+        const password = document.getElementById("password").value.trim();
+
+        if (password === "") {
+            mostrarError("Debe ingresar la contraseña.");
+            return;
+        }
+
+        CommandDispatcher.submit("/hipodromo/confirmarApuesta", {
+            password: password
+        });
+    });
+
+    document.getElementById("btnCancelar").addEventListener("click", () => {
+        CommandDispatcher.submit("/hipodromo/cancelarApuesta", {});
+    });
+
+    function mostrarError(mensaje) {
+        document.getElementById("mensajeError").textContent = mensaje;
+    }
+
+    function formatoDinero(valor) {
+        return "$" + Number(valor || 0).toLocaleString("es-UY");
+    }
+
+    function formatoNumero(valor) {
+        return Number(valor || 0).toFixed(2);
+    }
+
+    CommandDispatcher.startView(view);
+</script>
+
+</body>
+</html>
