@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Tablero Administrador - Hipódromo</title>
+    <link rel="stylesheet" href="/css/tableroAdministrador.css">
+</head>
+<body>
+
+<header class="navbar">
+    <div class="brand">🏇 <span>MalaPATA</span></div>
+    <div class="user-box">
+        <span>Panel de administración</span>
+        <button id="btnLogout">Cerrar sesión</button>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="titulo">
+        <div>
+            <h1>Tablero de Control</h1>
+            <p>Resumen general de la jornada seleccionada</p>
+        </div>
+
+        <div class="fecha-card">
+            <span>Jornada</span>
+            <strong id="fechaJornada">-</strong>
+        </div>
+    </section>
+
+    <section class="metricas">
+        <article>
+            <span>Total apostado</span>
+            <strong id="totalApostado">$0</strong>
+        </article>
+
+        <article>
+            <span>Total pagado</span>
+            <strong id="totalPagado">$0</strong>
+        </article>
+
+        <article>
+            <span>Comisiones</span>
+            <strong id="totalComisiones">$0</strong>
+        </article>
+
+        <article>
+            <span>Balance general</span>
+            <strong id="balanceGeneral">$0</strong>
+        </article>
+
+        <article>
+            <span>Carreras totales</span>
+            <strong id="cantidadCarreras">0</strong>
+        </article>
+
+        <article>
+            <span>Finalizadas</span>
+            <strong id="cantidadFinalizadas">0</strong>
+        </article>
+
+        <article>
+            <span>Faltan correr</span>
+            <strong id="cantidadPorCorrer" class="rojo">0</strong>
+        </article>
+    </section>
+
+    <section class="bloque">
+        <div class="bloque-header">
+            <h2>✅ Carreras Finalizadas</h2>
+            <span id="badgeFinalizadas">0 carreras</span>
+        </div>
+
+        <div class="tabla-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>N°</th>
+                        <th>Hora fin.</th>
+                        <th>Caballos</th>
+                        <th>Total apostado</th>
+                        <th>Total pagado</th>
+                        <th>Caballo ganador</th>
+                        <th>Dividendo final</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaFinalizadas"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="bloque">
+        <div class="bloque-header">
+            <h2>⏳ Próximas Carreras</h2>
+            <span id="badgeProximas">0 pendientes</span>
+        </div>
+
+        <div class="tabla-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>N°</th>
+                        <th>Estado</th>
+                        <th>Caballos</th>
+                        <th>Total apostado</th>
+                        <th>Apuestas</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaProximas"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <p id="mensajeError" class="mensaje-error"></p>
+
+</main>
+
+<script type="module">
+    import CommandDispatcher from "/js/CommandDispatcher.js";
+
+    const view = CommandDispatcher.registerView("TableroAdministrador", {
+        urlInicio: "/administracion/inicioTableroAdmin",
+        onException: mostrarError,
+        onError: (status, text) => mostrarError(text || "Error inesperado")
+    });
+
+    view.handler("datosJornadaActual", (jornada) => {
+        document.getElementById("fechaJornada").textContent = formatearFecha(jornada.fecha);
+        document.getElementById("totalApostado").textContent = formatoDinero(jornada.totalApostado);
+        document.getElementById("totalPagado").textContent = formatoDinero(jornada.totalPagado);
+        document.getElementById("totalComisiones").textContent = formatoDinero(jornada.totalComisiones);
+        document.getElementById("balanceGeneral").textContent = formatoDinero(jornada.balanceGeneral);
+        document.getElementById("cantidadCarreras").textContent = jornada.cantidadCarreras;
+        document.getElementById("cantidadFinalizadas").textContent = jornada.cantidadFinalizadas;
+        document.getElementById("cantidadPorCorrer").textContent = jornada.cantidadPorCorrer;
+    });
+
+    view.handler("carrerasFinalizadas", (carreras) => {
+        const tabla = document.getElementById("tablaFinalizadas");
+        tabla.innerHTML = "";
+
+        document.getElementById("badgeFinalizadas").textContent =
+            `${carreras ? carreras.length : 0} carreras`;
+
+        if (!carreras || carreras.length === 0) {
+            tabla.innerHTML = `<tr><td colspan="7" class="sin-datos">No hay carreras finalizadas.</td></tr>`;
+            return;
+        }
+
+        carreras.forEach(carrera => {
+            const fila = document.createElement("tr");
+
+            fila.innerHTML = `
+                <td><strong>${carrera.numero}</strong></td>
+                <td>${formatearHora(carrera.horaFinalizacion)}</td>
+                <td>${carrera.cantidadCaballos}</td>
+                <td class="verde">${formatoDinero(carrera.totalApostado)}</td>
+                <td class="verde">${formatoDinero(carrera.totalPagado)}</td>
+                <td>🏆 ${carrera.caballoGanador ?? "-"}</td>
+                <td><strong>${formatoNumero(carrera.dividendoFinalGanador)}</strong></td>
+            `;
+
+            tabla.appendChild(fila);
+        });
+    });
+
+    view.handler("proximasCarreras", (carreras) => {
+        const tabla = document.getElementById("tablaProximas");
+        tabla.innerHTML = "";
+
+        document.getElementById("badgeProximas").textContent =
+            `${carreras ? carreras.length : 0} pendientes`;
+
+        if (!carreras || carreras.length === 0) {
+            tabla.innerHTML = `<tr><td colspan="6" class="sin-datos">No hay próximas carreras.</td></tr>`;
+            return;
+        }
+
+        carreras.forEach(carrera => {
+            const fila = document.createElement("tr");
+
+            fila.innerHTML = `
+                <td><strong>${carrera.numero}</strong></td>
+                <td><span class="estado ${estadoClase(carrera.estado)}">${carrera.estado}</span></td>
+                <td>${carrera.cantidadCaballos}</td>
+                <td class="verde">${formatoDinero(carrera.totalApostado)}</td>
+                <td>${carrera.cantidadApuestas}</td>
+                <td>
+                    <button class="btn-gestionar"
+                            data-numero="${carrera.numero}">
+                        Gestionar
+                    </button>
+                </td>
+            `;
+
+            tabla.appendChild(fila);
+        });
+    });
+
+    document.getElementById("btnLogout").addEventListener("click", () => {
+        CommandDispatcher.submit("/administracion/logout", {});
+    });
+
+    view.handler("sesionFinalizada", () => {
+        window.location.href = "/loginAdministrador.html";
+    });
+
+    function mostrarError(mensaje) {
+        document.getElementById("mensajeError").textContent = mensaje;
+    }
+
+    function formatoDinero(valor) {
+        return "$" + Number(valor || 0).toLocaleString("es-UY");
+    }
+
+    function formatoNumero(valor) {
+        return Number(valor || 0).toFixed(2);
+    }
+
+   function formatearFecha(fecha) {
+         if (!fecha) return "-";
+
+        const dias = [
+            "Domingo", "Lunes", "Martes", "Miércoles",
+            "Jueves", "Viernes", "Sábado"
+        ];
+
+        const meses = [
+            "enero", "febrero", "marzo", "abril",
+            "mayo", "junio", "julio", "agosto",
+            "septiembre", "octubre", "noviembre", "diciembre"
+        ];
+
+        const partes = fecha.split("-");
+
+        const anio = parseInt(partes[0]);
+        const mes = parseInt(partes[1]) - 1;
+        const dia = parseInt(partes[2]);
+
+        const d = new Date(anio, mes, dia);
+
+        return `${dias[d.getDay()]} ${dia} de ${meses[mes]} de ${anio}`;
+    }
+
+    function formatearHora(fechaHora) {
+        if (!fechaHora) return "-";
+        return String(fechaHora).replace("T", " ").substring(11, 16);
+    }
+
+    function estadoClase(estado) {
+        if (!estado) return "";
+        return estado.toLowerCase();
+    }
+
+    CommandDispatcher.startView(view);
+</script>
+
+</body>
+</html>
