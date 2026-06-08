@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Tablero Jugador - Hipódromo</title>
+    <link rel="stylesheet" href="/css/tableroJugador.css">
+</head>
+<body>
+
+<header class="navbar">
+    <div class="brand">🏇 <span>MalaPATA</span></div>
+    <div class="user-box">
+        <span id="navSaldo">Saldo $0</span>
+        <span id="navUsuario">Jugador</span>
+        <button id="btnLogout">Cerrar sesión</button>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="resumen">
+        <div>
+            <p>Jugador</p>
+            <h2 id="nombreCompleto">-</h2>
+        </div>
+        <div>
+            <p>Saldo actual</p>
+            <h3 id="saldoActual">$0</h3>
+        </div>
+        <div>
+            <p>Total apostado</p>
+            <h3 id="montoTotalApostado">$0</h3>
+        </div>
+        <div>
+            <p>Total ganado</p>
+            <h3 id="montoTotalGanado">$0</h3>
+        </div>
+    </section>
+
+    <section class="bloque">
+        <h2>🏁 Carreras disponibles para apostar</h2>
+        <div id="contenedorCarreras" class="carreras-grid"></div>
+    </section>
+
+    <section class="bloque">
+        <h2>🎯 Tipos de apuesta disponibles</h2>
+        <div id="contenedorModalidades" class="modalidades"></div>
+    </section>
+
+    <section class="bloque">
+        <h2>📋 Mis apuestas</h2>
+        <div class="tabla-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>N° carrera</th>
+                        <th>Carrera</th>
+                        <th>N° caballo</th>
+                        <th>Caballo</th>
+                        <th>Monto apostado</th>
+                        <th>Tipo</th>
+                        <th>Dividendo final</th>
+                        <th>Monto cobrado</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaApuestas"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <p id="mensajeError" class="mensaje-error"></p>
+
+</main>
+
+<script type="module">
+    import CommandDispatcher from "/js/CommandDispatcher.js";
+
+    const view = CommandDispatcher.registerView("TableroJugador", {
+        urlInicio: "/hipodromo/inicioTableroJugador",
+        onException: mostrarError,
+        onError: (status, text) => mostrarError(text || "Error inesperado")
+    });
+
+    view.handler("nombreCompleto", (nombre) => {
+        document.getElementById("nombreCompleto").textContent = nombre;
+        document.getElementById("navUsuario").textContent = nombre;
+    });
+
+    view.handler("saldoActual", (saldo) => {
+        document.getElementById("saldoActual").textContent = formatoDinero(saldo);
+        document.getElementById("navSaldo").textContent = "Saldo " + formatoDinero(saldo);
+    });
+
+    view.handler("montoTotalApostado", (monto) => {
+        document.getElementById("montoTotalApostado").textContent = formatoDinero(monto);
+    });
+
+    view.handler("montoTotalGanado", (monto) => {
+        document.getElementById("montoTotalGanado").textContent = formatoDinero(monto);
+    });
+
+    view.handler("carrerasDisponiblesParaApuestas", (carreras) => {
+        const contenedor = document.getElementById("contenedorCarreras");
+        contenedor.innerHTML = "";
+
+        if (!carreras || carreras.length === 0) {
+            contenedor.innerHTML = `<p class="sin-datos">No hay carreras disponibles para apostar.</p>`;
+            return;
+        }
+
+        carreras.forEach(carrera => {
+            const card = document.createElement("article");
+            card.className = "carrera-card";
+
+            const registros = carrera.registros || carrera.caballosParticipantes || [];
+
+            card.innerHTML = `
+                <div class="carrera-header">
+                    <div class="numero">${carrera.numeroCarrera ?? carrera.numero}</div>
+                    <div>
+                        <h3>${carrera.nombreCarrera ?? carrera.nombre}</h3>
+                        <p>${carrera.fechaJornada ?? ""}</p>
+                    </div>
+                </div>
+
+                <div class="carrera-info">
+                    <span>Estado: ${carrera.estado ?? "-"}</span>
+                    <span>Total: ${formatoDinero(carrera.totalApostado ?? 0)}</span>
+                </div>
+
+                <table class="tabla-caballos">
+                    <thead>
+                        <tr>
+                            <th>N°</th>
+                            <th>Caballo</th>
+                            <th>Dividendo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${registros.map(r => `
+                            <tr>
+                                <td>${r.numeroCaballo}</td>
+                                <td>${r.nombreCaballo}</td>
+                                <td>${r.dividendoActual ?? r.dividendo ?? "-"}</td>
+                            </tr>
+                        `).join("")}
+                    </tbody>
+                </table>
+
+                <button class="btn-apostar"
+                        data-fecha="${carrera.fechaJornada}"
+                        data-numero="${carrera.numeroCarrera ?? carrera.numero}">
+                    Apostar
+                </button>
+            `;
+
+            contenedor.appendChild(card);
+        });
+    });
+
+    view.handler("modalidadesApuestas", (modalidades) => {
+        const contenedor = document.getElementById("contenedorModalidades");
+        contenedor.innerHTML = "";
+
+        modalidades.forEach(m => {
+            const pill = document.createElement("span");
+            pill.className = "modalidad";
+            pill.textContent = m.nombre;
+            contenedor.appendChild(pill);
+        });
+    });
+
+    view.handler("apuestasRealizadasOrdenDesc", (apuestas) => {
+        const tabla = document.getElementById("tablaApuestas");
+        tabla.innerHTML = "";
+
+        if (!apuestas || apuestas.length === 0) {
+            tabla.innerHTML = `<tr><td colspan="10" class="sin-datos">No hay apuestas realizadas.</td></tr>`;
+            return;
+        }
+
+        apuestas.forEach(a => {
+            const fila = document.createElement("tr");
+
+            fila.innerHTML = `
+                <td>${formatoFecha(a.fecha)}</td>
+                <td>${a.numeroCarrera ?? "-"}</td>
+                <td>${a.nombreCarrera ?? "-"}</td>
+                <td>${a.numeroCaballo ?? "-"}</td>
+                <td>${a.nombreCaballo ?? "-"}</td>
+                <td class="amarillo">${formatoDinero(a.monto)}</td>
+                <td>${a.modalidad}</td>
+                <td>${a.dividendoFinal || "-"}</td>
+                <td class="verde">${formatoDinero(a.montoCobrado)}</td>
+                <td><span class="estado">${a.estado}</span></td>
+            `;
+
+            tabla.appendChild(fila);
+        });
+    });
+
+    document.getElementById("btnLogout").addEventListener("click", () => {
+        CommandDispatcher.submit("/hipodromo/logout", {});
+    });
+
+    view.handler("sesionFinalizada", () => {
+        window.location.href = "/loginJugador.html";
+    });
+
+    function mostrarError(mensaje) {
+        document.getElementById("mensajeError").textContent = mensaje;
+    }
+
+    function formatoDinero(valor) {
+        return "$" + Number(valor || 0).toLocaleString("es-UY");
+    }
+
+    function formatoFecha(fecha) {
+        if (!fecha) return "-";
+        return String(fecha).replace("T", " ").substring(0, 16);
+    }
+
+    CommandDispatcher.startView(view);
+</script>
+
+</body>
+</html>
