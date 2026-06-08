@@ -1,5 +1,8 @@
 package ort.da.hipodromo.Dtos;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ort.da.hipodromo.modelo.Carrera.Registro;
 
 public class RegistroDto {
@@ -20,4 +23,14 @@ public class RegistroDto {
     public String getNombreCaballo() {
         return nombreCaballo;
     }
+
+    public static List<RegistroDto> fromList(List<Registro> registros){
+    List<RegistroDto> result = new ArrayList<>();
+
+    for(Registro registro : registros){
+        result.add(new RegistroDto(registro));
+    }
+
+    return result;
+}
 }

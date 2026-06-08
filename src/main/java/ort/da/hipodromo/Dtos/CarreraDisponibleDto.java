@@ -1,6 +1,7 @@
 package ort.da.hipodromo.Dtos;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import ort.da.hipodromo.modelo.Carrera.Carrera;
 import ort.da.hipodromo.modelo.Carrera.Jornada;
@@ -9,6 +10,7 @@ public class CarreraDisponibleDto {
     private LocalDate fechaJornada;
     private int numeroCarrera;
     private String nombreCarrera;
+    private List<RegistroDto> registros;
     private String estado;
     private int cantidadCaballos;
     private double totalApostado;
@@ -18,6 +20,7 @@ public class CarreraDisponibleDto {
         this.fechaJornada = jornada.getFecha();
         this.numeroCarrera = carrera.getNumero();
         this.nombreCarrera = carrera.getNombre();
+        this.registros = RegistroDto.fromList(carrera.getRegistros());
         this.estado = carrera.getEstado().toString();
         this.cantidadCaballos = carrera.cantidadRegistros();
         this.totalApostado = carrera.totalApostado();
@@ -38,6 +41,10 @@ public class CarreraDisponibleDto {
 
     public String getEstado() {
         return estado;
+    }
+
+    public List<RegistroDto> getRegistros() {
+        return registros;
     }
 
     public int getCantidadCaballos() {
