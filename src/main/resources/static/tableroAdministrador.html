@@ -194,12 +194,18 @@
                 <td class="verde">${formatoDinero(carrera.totalApostado)}</td>
                 <td>${carrera.cantidadApuestas}</td>
                 <td>
-                    <button class="btn-gestionar"
-                            data-numero="${carrera.numero}">
+                    <button class="btn-gestionar">
                         Gestionar
                     </button>
                 </td>
             `;
+
+             const botonGestionar = fila.querySelector(".btn-gestionar");
+
+            botonGestionar.addEventListener("click", () => {
+                window.location.href =
+                    `/gestionarCarrera.html?fechaJornada=${carrera.fechaJornada}&numeroCarrera=${carrera.numero}`;
+            });
 
             tabla.appendChild(fila);
         });

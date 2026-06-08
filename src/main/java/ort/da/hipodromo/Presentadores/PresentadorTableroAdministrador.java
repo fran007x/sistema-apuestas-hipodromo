@@ -75,7 +75,7 @@ public class PresentadorTableroAdministrador {
     }
 
     public Command proximasCarreras(Jornada jornada){
-        return new Command("proximasCarreras", ProximaCarreraDto.fromList(jornada.proximasCarreras()));
+        return new Command("proximasCarreras", ProximaCarreraDto.fromList(jornada.getFecha(), jornada.proximasCarreras()));
     }
 
     public Command mensajeError(String texto){

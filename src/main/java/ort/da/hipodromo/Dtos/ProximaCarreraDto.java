@@ -1,23 +1,30 @@
 package ort.da.hipodromo.Dtos;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import ort.da.hipodromo.modelo.Carrera.Carrera;
 
 public class ProximaCarreraDto {
+    private LocalDate fechaJornada;
     private int numero;
     private String estado;
     private int cantidadCaballos;
     private double totalApostado;
     private int cantidadApuestas;
 
-    public ProximaCarreraDto(Carrera carrera) {
+    public ProximaCarreraDto(LocalDate fechaJornada, Carrera carrera) {
+        this.fechaJornada = fechaJornada;
         this.numero = carrera.getNumero();
         this.estado = carrera.getEstado().toString();
         this.cantidadCaballos = carrera.cantidadRegistros();
         this.totalApostado = carrera.totalApostado();
         this.cantidadApuestas = carrera.cantidadApuestas();
+    }
+
+    public LocalDate getFechaJornada() {
+        return fechaJornada;
     }
 
     public int getNumero() {
@@ -40,10 +47,10 @@ public class ProximaCarreraDto {
         return cantidadApuestas;
     }
 
-    public static List<ProximaCarreraDto>fromList(List<Carrera> carreras){
+    public static List<ProximaCarreraDto>fromList(LocalDate fechaJornada, List<Carrera> carreras){
         List<ProximaCarreraDto> result = new ArrayList<>();
         for(Carrera carrera : carreras){
-            result.add( new ProximaCarreraDto(carrera));
+            result.add( new ProximaCarreraDto(fechaJornada, carrera));
         }
         return result;
     }

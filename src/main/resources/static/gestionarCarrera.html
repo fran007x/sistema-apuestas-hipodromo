@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestionar Carrera</title>
+    <link rel="stylesheet" href="/css/gestionarCarrera.css">
+</head>
+<body>
+
+<header class="navbar">
+    <div class="brand">🏇 <span>MalaPATA</span></div>
+    <button id="btnVolver">Volver al tablero</button>
+</header>
+
+<main class="container">
+
+    <section class="carrera-header">
+        <div>
+            <span id="numeroCarrera" class="numero">-</span>
+        </div>
+
+        <div class="datos-carrera">
+            <h1 id="nombreCarrera">Carrera</h1>
+            <span id="estadoCarrera" class="estado">-</span>
+        </div>
+
+        <div class="total">
+            <span>Total apostado</span>
+            <strong id="totalApostado">$0</strong>
+        </div>
+    </section>
+
+    <section class="acciones">
+        <button id="btnAbrir" class="btn verde">Abrir Carrera</button>
+        <button id="btnCerrar" class="btn amarillo">Cerrar Carrera</button>
+
+        <div class="finalizar-box">
+            <label for="caballoGanador">Finalizar carrera con ganador:</label>
+            <select id="caballoGanador">
+                <option value="">— Elegir caballo —</option>
+            </select>
+            <button id="btnFinalizar" class="btn rojo">Finalizar Carrera y Pagar</button>
+        </div>
+    </section>
+
+    <p id="mensaje" class="mensaje"></p>
+
+    <section class="bloque">
+        <h2>🏇 Caballos Participantes</h2>
+
+        <div class="tabla-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>N°</th>
+                        <th>Nombre del caballo</th>
+                        <th>Dividendo actual</th>
+                        <th>Total apostado</th>
+                        <th>Cantidad de apuestas</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaCaballos"></tbody>
+            </table>
+        </div>
+    </section>
+
+</main>
+
+<script type="module">
+    import CommandDispatcher from "/js/CommandDispatcher.js";
+
+    const params = new URLSearchParams(window.location.search);
+
+    const view = CommandDispatcher.registerView("GestionarCarrera", {
+        urlInicio: "/administracion/inicioCasoUsoGestionarCarrera",
+        dataInicio: {
+            fechaJornada: params.get("fechaJornada"),
+            numeroCarrera: params.get("numeroCarrera")
+        },
+        onException: mostrarError,
+        onError: (status, text) => mostrarError(text || "Error inesperado")
+    });
+
+    view.handler("datosCarreraGestion", (carrera) => {
+        cargarCarrera(carrera);
+    });
+
+    view.handler("carreraAbierta", () => {
+        mostrarMensaje("Carrera abierta correctamente.");
+    });
+
+    view.handler("carreraCerrada", () => {
+        mostrarMensaje("Carrera cerrada correctamente.");
+    });
+
+    view.handler("carreraFinalizada", () => {
+        mostrarMensaje("Carrera finalizada correctamente.");
+    });
+
+    view.handler("actualizarTableroAdministrador", () => {
+        window.location.href = "/tableroAdministrador.html";
+    });
+
+    view.handler("mensajeError", (mensaje) => {
+        mostrarError(mensaje);
+    });
+
+    document.getElementById("btnAbrir").addEventListener("click", () => {
+        CommandDispatcher.submit("/administracion/abrirCarrera", {});
+    });
+
+    document.getElementById("btnCerrar").addEventListener("click", () => {
+        CommandDispatcher.submit("/administracion/cerrarCarrera", {});
+    });
+
+    document.getElementById("btnFinalizar").addEventListener("click", () => {
+        const numeroCaballoGanador = document.getElementById("caballoGanador").value;
+
+        CommandDispatcher.submit("/administracion/finalizarCarrera", {
+            numeroCaballoGanador: numeroCaballoGanador
+        });
+    });
+
+    document.getElementById("btnVolver").addEventListener("click", () => {
+        CommandDispatcher.submit("/administracion/finalizarGestionCarrera", {});
+    });
+
+    function cargarCarrera(carrera) {
+        document.getElementById("numeroCarrera").textContent = carrera.numero;
+        document.getElementById("nombreCarrera").textContent = carrera.nombre;
+        document.getElementById("estadoCarrera").textContent = carrera.estado;
+        document.getElementById("estadoCarrera").className = "estado " + carrera.estado.toLowerCase();
+        document.getElementById("totalApostado").textContent = formatoDinero(carrera.totalApostado);
+
+        cargarCaballos(carrera.caballosParticipantes || []);
+    }
+
+    function cargarCaballos(caballos) {
+        const tabla = document.getElementById("tablaCaballos");
+        const select = document.getElementById("caballoGanador");
+
+        tabla.innerHTML = "";
+        select.innerHTML = `<option value="">— Elegir caballo —</option>`;
+
+        if (caballos.length === 0) {
+            tabla.innerHTML = `<tr><td colspan="5" class="sin-datos">No hay caballos participantes.</td></tr>`;
+            return;
+        }
+
+        caballos.forEach(caballo => {
+            const fila = document.createElement("tr");
+
+            fila.innerHTML = `
+                <td><strong>${caballo.numeroCaballo}</strong></td>
+                <td>${caballo.nombreCaballo}</td>
+                <td class="azul">${formatoNumero(caballo.dividendoActual)}</td>
+                <td class="verde">${formatoDinero(caballo.totalApostado)}</td>
+                <td>${caballo.cantidadApuestas}</td>
+            `;
+
+            tabla.appendChild(fila);
+
+            const option = document.createElement("option");
+            option.value = caballo.numeroCaballo;
+            option.textContent = `${caballo.numeroCaballo} - ${caballo.nombreCaballo}`;
+            select.appendChild(option);
+        });
+    }
+
+    function mostrarError(mensaje) {
+        const elemento = document.getElementById("mensaje");
+        elemento.textContent = mensaje;
+        elemento.className = "mensaje error";
+    }
+
+    function mostrarMensaje(mensaje) {
+        const elemento = document.getElementById("mensaje");
+        elemento.textContent = mensaje;
+        elemento.className = "mensaje ok";
+    }
+
+    function formatoDinero(valor) {
+        return "$" + Number(valor || 0).toLocaleString("es-UY");
+    }
+
+    function formatoNumero(valor) {
+        return Number(valor || 0).toFixed(2);
+    }
+
+    CommandDispatcher.startView(view);
+</script>
+
+</body>
+</html>
