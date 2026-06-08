@@ -16,11 +16,11 @@ public class CarreraDisponibleDto {
     private double totalApostado;
     private int cantidadApuestas;
 
-    public CarreraDisponibleDto(Jornada jornada, Carrera carrera) {
+    public CarreraDisponibleDto(Jornada jornada, Carrera carrera, double comision) {
         this.fechaJornada = jornada.getFecha();
         this.numeroCarrera = carrera.getNumero();
         this.nombreCarrera = carrera.getNombre();
-        this.registros = RegistroDto.fromList(carrera.getRegistros());
+        this.registros = RegistroDto.fromList(carrera.getRegistros(), carrera.totalApostado(), comision);
         this.estado = carrera.getEstado().toString();
         this.cantidadCaballos = carrera.cantidadRegistros();
         this.totalApostado = carrera.totalApostado();

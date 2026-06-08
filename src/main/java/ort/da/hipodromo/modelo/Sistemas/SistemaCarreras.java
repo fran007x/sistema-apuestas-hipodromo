@@ -89,11 +89,11 @@ public class SistemaCarreras {
         return carrera.obtenerRegistro(numeroRegistro);
     }
 
-    public List<CarreraDisponibleDto> carrerasDisponiblesParaApostar(){
+    public List<CarreraDisponibleDto> carrerasDisponiblesParaApostar(double comision){
         List<CarreraDisponibleDto> disponibles = new ArrayList<>();
 
         for(Jornada jornada : jornadas){
-            disponibles.addAll(jornada.carrerasDisponiblesParaApostar());
+            disponibles.addAll(jornada.carrerasDisponiblesParaApostar(comision));
         }
         return disponibles;
     }

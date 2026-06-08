@@ -142,12 +142,12 @@ public class Jornada {
         return proximas;
     }
 
-    public List<CarreraDisponibleDto> carrerasDisponiblesParaApostar(){
+    public List<CarreraDisponibleDto> carrerasDisponiblesParaApostar(double comision){
         List<CarreraDisponibleDto> disponibles = new ArrayList<>();
 
         for(Carrera carrera : carreras){
             if(carrera.permiteApuestas()){
-                disponibles.add(new CarreraDisponibleDto(this, carrera));
+                disponibles.add(new CarreraDisponibleDto(this, carrera, comision));
             }
         }
         return disponibles;

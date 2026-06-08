@@ -100,7 +100,7 @@ public class Sistema {
     }
 
     public List<CarreraDisponibleDto> carrerasDisponiblesParaApostar(){
-        return sistemaCarreras.carrerasDisponiblesParaApostar();
+        return sistemaCarreras.carrerasDisponiblesParaApostar(sistemaApuestas.getComision());
     }
 
     public Jornada jornadaActual(){
