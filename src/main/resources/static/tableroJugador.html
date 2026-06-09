@@ -75,7 +75,9 @@
 </main>
 
 <script type="module">
-    import CommandDispatcher from "/js/CommandDispatcher.js";
+   import CommandDispatcher from "/js/CommandDispatcher.js";
+
+    let modalidadSeleccionada = null;
 
     const view = CommandDispatcher.registerView("TableroJugador", {
         urlInicio: "/hipodromo/inicioTableroJugador",
@@ -114,20 +116,20 @@
             const card = document.createElement("article");
             card.className = "carrera-card";
 
-            const registros = carrera.registros || carrera.caballosParticipantes || [];
+            const registros = carrera.registros || [];
 
             card.innerHTML = `
                 <div class="carrera-header">
-                    <div class="numero">${carrera.numeroCarrera ?? carrera.numero}</div>
+                    <div class="numero">${carrera.numeroCarrera}</div>
                     <div>
-                        <h3>${carrera.nombreCarrera ?? carrera.nombre}</h3>
-                        <p>${carrera.fechaJornada ?? ""}</p>
+                        <h3>${carrera.nombreCarrera}</h3>
+                        <p>${carrera.fechaJornada}</p>
                     </div>
                 </div>
 
                 <div class="carrera-info">
-                    <span>Estado: ${carrera.estado ?? "-"}</span>
-                    <span>Total: ${formatoDinero(carrera.totalApostado ?? 0)}</span>
+                    <span>Estado: ${carrera.estado}</span>
+                    <span>Total: ${formatoDinero(carrera.totalApostado)}</span>
                 </div>
 
                 <table class="tabla-caballos">
@@ -143,18 +145,33 @@
                             <tr>
                                 <td>${r.numeroCaballo}</td>
                                 <td>${r.nombreCaballo}</td>
-                                <td>${r.dividendoActual ?? r.dividendo ?? "-"}</td>
+                                <td>${Number(r.dividendoActual || 0).toFixed(2)}</td>
                             </tr>
                         `).join("")}
                     </tbody>
                 </table>
 
-                <button class="btn-apostar"
-                        data-fecha="${carrera.fechaJornada}"
-                        data-numero="${carrera.numeroCarrera ?? carrera.numero}">
-                    Apostar
-                </button>
+                <select class="select-caballo">
+                    <option value="">Seleccionar caballo</option>
+                    ${registros.map(r => `
+                        <option value="${r.numeroCaballo}">
+                            ${r.numeroCaballo} - ${r.nombreCaballo}
+                        </option>
+                    `).join("")}
+                </select>
+
+                <input class="input-monto" type="number" min="1" placeholder="Monto">
+
+                <button class="btn-apostar">Apostar</button>
             `;
+
+            card.querySelector(".btn-apostar").addEventListener("click", () => {
+                const numeroCaballo = card.querySelector(".select-caballo").value;
+                const monto = card.querySelector(".input-monto").value;
+
+                window.location.href =
+                    `/confirmarApuesta.html?fechaJornada=${carrera.fechaJornada}&numeroCarrera=${carrera.numeroCarrera}&numeroCaballo=${numeroCaballo}&modalidad=${modalidadSeleccionada || ""}&monto=${monto}`;
+            });
 
             contenedor.appendChild(card);
         });
@@ -168,6 +185,17 @@
             const pill = document.createElement("span");
             pill.className = "modalidad";
             pill.textContent = m.nombre;
+
+            pill.addEventListener("click", () => {
+                modalidadSeleccionada = m.nombre;
+
+                document.querySelectorAll(".modalidad").forEach(x => {
+                    x.classList.remove("seleccionada");
+                });
+
+                pill.classList.add("seleccionada");
+            });
+
             contenedor.appendChild(pill);
         });
     });

@@ -276,6 +276,34 @@ th, td {
     margin-top: 16px;
 }
 
+.select-caballo,
+.input-monto {
+    width: calc(100% - 28px);
+    margin: 0 14px 12px;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #303b4d;
+    background: #111722;
+    color: #ffffff;
+    outline: none;
+}
+
+.select-caballo:focus,
+.input-monto:focus {
+    border-color: #f1c84b;
+}
+
+.modalidad {
+    cursor: pointer;
+}
+
+.modalidad.seleccionada {
+    background: #f1c84b;
+    color: #111722;
+    border-color: #f1c84b;
+}
+
+
 @media (max-width: 900px) {
     .resumen {
         grid-template-columns: 1fr 1fr;
