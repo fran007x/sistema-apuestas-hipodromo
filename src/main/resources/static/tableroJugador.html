@@ -45,7 +45,9 @@
     <section class="bloque">
         <h2>🎯 Tipos de apuesta disponibles</h2>
         <div id="contenedorModalidades" class="modalidades"></div>
+        <p id="errorModalidad" class="error-campo"></p>
     </section>
+    
 
     <section class="bloque">
         <h2>📋 Mis apuestas</h2>
@@ -69,8 +71,6 @@
             </table>
         </div>
     </section>
-
-    <p id="mensajeError" class="mensaje-error"></p>
 
 </main>
 
@@ -160,7 +160,11 @@
                     `).join("")}
                 </select>
 
+                <p class="error-caballo error-campo"></p>
+
                 <input class="input-monto" type="number" min="1" placeholder="Monto">
+
+                <p class="error-monto error-campo"></p>
 
                 <button class="btn-apostar">Apostar</button>
             `;
@@ -168,6 +172,32 @@
             card.querySelector(".btn-apostar").addEventListener("click", () => {
                 const numeroCaballo = card.querySelector(".select-caballo").value;
                 const monto = card.querySelector(".input-monto").value;
+
+                const errorCaballo = card.querySelector(".error-caballo");
+                const errorMonto = card.querySelector(".error-monto");
+                const errorModalidad = document.getElementById("errorModalidad");
+
+                errorCaballo.textContent = "";
+                errorMonto.textContent = "";
+                errorModalidad.textContent = "";
+
+                    if (!modalidadSeleccionada) {
+                        errorModalidad.textContent =
+                            "Debe seleccionar un tipo de apuesta.";
+                        return;
+                    }
+
+                    if (!numeroCaballo) {
+                        errorCaballo.textContent =
+                            "Debe seleccionar un caballo.";
+                        return;
+                    }
+
+                    if (!monto || Number(monto) <= 0) {
+                        errorMonto.textContent =
+                            "Debe ingresar un monto válido.";
+                        return;
+                    }
 
                 window.location.href =
                     `/confirmarApuesta.html?fechaJornada=${carrera.fechaJornada}&numeroCarrera=${carrera.numeroCarrera}&numeroCaballo=${numeroCaballo}&modalidad=${modalidadSeleccionada || ""}&monto=${monto}`;
@@ -220,7 +250,7 @@
                 <td>${a.nombreCaballo ?? "-"}</td>
                 <td class="amarillo">${formatoDinero(a.monto)}</td>
                 <td>${a.modalidad}</td>
-                <td>${a.dividendoFinal || "-"}</td>
+                <td>${formatoNumero(a.dividendoFinal)}</td>
                 <td class="verde">${formatoDinero(a.montoCobrado)}</td>
                 <td><span class="estado">${a.estado}</span></td>
             `;
@@ -242,8 +272,19 @@
     }
 
     function formatoDinero(valor) {
-        return "$" + Number(valor || 0).toLocaleString("es-UY");
+         return "$" + Number(valor || 0).toLocaleString("es-UY", {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 2
+    });
     }
+
+    function formatoNumero(valor) {
+    if (valor === null || valor === undefined || Number(valor) === 0) {
+        return "-";
+    }
+
+    return Number(valor).toFixed(2);
+}
 
     function formatoFecha(fecha) {
         if (!fecha) return "-";

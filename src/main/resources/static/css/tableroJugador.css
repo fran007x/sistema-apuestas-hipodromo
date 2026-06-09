@@ -303,6 +303,28 @@ th, td {
     border-color: #f1c84b;
 }
 
+.error-campo{
+    color:#ff6b6b;
+    font-size:13px;
+    font-weight:bold;
+    min-height:18px;
+}
+
+#errorModalidad{
+    margin-top:12px;
+}
+
+.error-caballo{
+    margin-top:4px;
+    margin-bottom:10px;
+    margin-left:10px;
+}
+
+.error-monto{
+    margin-top:4px;
+    margin-bottom:10px;
+    margin-left:10px;
+}
 
 @media (max-width: 900px) {
     .resumen {
