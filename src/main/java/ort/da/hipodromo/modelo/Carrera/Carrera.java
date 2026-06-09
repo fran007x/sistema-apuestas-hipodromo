@@ -21,6 +21,8 @@ public class Carrera {
         this.registros = registros;
         this.caballoGanador = null;
         this.horaFinalizacion = null;
+
+        asignarCarreraARegistros();
     }
 
     public int getNumero() {
@@ -57,6 +59,12 @@ public class Carrera {
 
     public void setCaballoGanador(Registro caballoGanador) {
         this.caballoGanador = caballoGanador;
+    }
+
+    private void asignarCarreraARegistros(){
+        for(Registro registro : registros){
+            registro.setCarrera(this);
+        }
     }
 
     @Override

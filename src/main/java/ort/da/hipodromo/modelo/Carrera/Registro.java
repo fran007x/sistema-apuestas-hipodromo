@@ -6,6 +6,7 @@ import java.util.List;
 import ort.da.hipodromo.modelo.Apuesta.Apuesta;
 
 public class Registro {
+    private Carrera carrera;
     private int numeroCaballo;
     private Caballo caballo;
     private List<Apuesta> apuestas;
@@ -16,6 +17,14 @@ public class Registro {
         this.caballo = caballo;
         this.apuestas = new ArrayList<>();
         this.dividendoFinal = 0;
+    }
+
+    public Carrera getCarrera() {
+        return carrera;
+    }
+
+    public void setCarrera(Carrera carrera) {
+        this.carrera = carrera;
     }
 
     public int getNumeroCaballo() {
