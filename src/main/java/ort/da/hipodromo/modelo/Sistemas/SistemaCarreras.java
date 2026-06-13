@@ -10,6 +10,7 @@ import ort.da.hipodromo.modelo.Carrera.Carrera;
 import ort.da.hipodromo.modelo.Carrera.Jornada;
 import ort.da.hipodromo.modelo.Carrera.Registro;
 import ort.da.hipodromo.modelo.Exceptions.DatosInvalidosException;
+import ort.da.hipodromo.modelo.Fachada.Sistema;
 
 public class SistemaCarreras {
     private List<Jornada> jornadas;
@@ -155,6 +156,7 @@ public class SistemaCarreras {
             throw new DatosInvalidosException("No existe la carrera indicada");
         }
         carrera.abrir();
+        Sistema.getInstance().avisar(Sistema.Eventos.cambioCarreras);
     }
 
     public void cerrarCarrera(LocalDate fechaJornada, int numeroCarrera, double comision){
@@ -164,6 +166,7 @@ public class SistemaCarreras {
             throw new DatosInvalidosException("No existe la carrera indicada");
         }
         carrera.cerrar(comision);
+        Sistema.getInstance().avisar(Sistema.Eventos.cambioCarreras);
     }
 
     public void finalizarCarrera(LocalDate fechaJornada, int numeroCarrera,int numeroRegistroGanador){
@@ -179,5 +182,7 @@ public class SistemaCarreras {
             throw new DatosInvalidosException("Debe indicar el caballo ganador de la carrera");
         }
         carrera.finalizar(ganador);
+        Sistema.getInstance().avisar(Sistema.Eventos.cambioCarreras);   
+        Sistema.getInstance().avisar(Sistema.Eventos.cambioApuestas);
     }
 }

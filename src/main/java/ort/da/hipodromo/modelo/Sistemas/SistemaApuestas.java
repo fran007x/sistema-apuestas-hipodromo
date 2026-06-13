@@ -13,6 +13,7 @@ import ort.da.hipodromo.modelo.Exceptions.DatosInvalidosException;
 import ort.da.hipodromo.modelo.Exceptions.EstadoCarreraInvalidoException;
 import ort.da.hipodromo.modelo.Exceptions.MontoInvalidoException;
 import ort.da.hipodromo.modelo.Exceptions.SaldoInsuficienteException;
+import ort.da.hipodromo.modelo.Fachada.Sistema;
 import ort.da.hipodromo.modelo.Usuario.Jugador;
 
 public class SistemaApuestas {
@@ -108,6 +109,8 @@ public class SistemaApuestas {
         apuestaEnCurso.getCarrera().actualizarEstadoPorDividendos(comision);
 
         apuestasEnCurso.remove(apuestaEnCurso);
+
+        Sistema.getInstance().avisar(Sistema.Eventos.cambioApuestas);
 
         return apuesta;
     }

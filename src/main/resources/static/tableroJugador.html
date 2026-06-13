@@ -76,11 +76,13 @@
 
 <script type="module">
    import CommandDispatcher from "/js/CommandDispatcher.js";
+   import SSECommandDispatcher from "/js/SSECommandDispatcher.js";
 
     let modalidadSeleccionada = null;
 
     const view = CommandDispatcher.registerView("TableroJugador", {
         urlInicio: "/hipodromo/inicioTableroJugador",
+        urlCierre: "/hipodromo/finalizarTableroJugador",
         onException: mostrarError,
         onError: (status, text) => mostrarError(text || "Error inesperado")
     });
@@ -292,6 +294,17 @@
     }
 
     CommandDispatcher.startView(view);
+
+    function sseCerrado(){
+      alert("Se cerro sse");
+    }
+
+
+    const sseConnection = new SSECommandDispatcher(
+        '/hipodromo/registrarSSE',
+        CommandDispatcher,
+        sseCerrado
+    );
 </script>
 
 </body>

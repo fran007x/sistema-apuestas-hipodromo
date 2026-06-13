@@ -17,8 +17,11 @@ import ort.da.hipodromo.modelo.Sistemas.SistemaUsuarios;
 import ort.da.hipodromo.modelo.Usuario.Administrador;
 import ort.da.hipodromo.modelo.Usuario.Jugador;
 import ort.da.hipodromo.modelo.Usuario.RegistroIngreso;
+import ort.da.hipodromo.observador.Observable;
 
-public class Sistema {
+public class Sistema extends Observable{
+    public enum Eventos {cambioCarreras, cambioApuestas};
+
     private static Sistema instancia;
 
     private SistemaUsuarios sistemaUsuarios;
